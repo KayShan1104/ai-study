@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python *)",
+      "Bash(Get-ChildItem -Directory -Name)",
+      "Bash(Select-String -Pattern \"obsidian\")",
+      "WebSearch"
+    ]
+  }
+}
