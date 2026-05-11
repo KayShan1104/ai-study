@@ -182,10 +182,10 @@ prompt_v2 = problem + "\n请一步步思考，先列出方程，再求解。"
 4. 迭代优化：根据测试结果调整 system prompt
 
 **Milestone 5**：
-- [ ] 设计一个包含角色、边界、规则、格式的完整 system prompt
-- [ ] 跑 10 个边界测试用例，Agent 行为符合预期 >= 80%
-- [ ] 尝试一次 prompt injection 攻击，观察 Agent 是否会被"带偏"
-- [ ] 迭代 2 轮以上，每次改进都有具体的测试数据支撑
+- [x] 设计一个包含角色、边界、规则、格式的完整 system prompt
+- [x] 跑 10 个边界测试用例，Agent 行为符合预期 >= 80%
+- [x] 尝试一次 prompt injection 攻击，观察 Agent 是否会被"带偏"
+- [x] 迭代 2 轮以上，每次改进都有具体的测试数据支撑
 
 ---
 
