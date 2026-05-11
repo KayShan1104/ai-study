@@ -424,3 +424,72 @@ CoT 模式:
 
 ---
 
+## Step 4：Structured Output 进阶
+
+### 实验：Prompt 口头要求 JSON vs response_format JSON Schema 约束
+
+代码在 `phase2_step4_structured_output.py`。
+
+任务：3 段有问题的代码（SQL 注入、密码硬编码、XSS），要求模型输出结构化的代码审查报告。
+
+#### 方式 1：Prompt 口头要求 JSON
+
+```python
+messages = [{"role": "user", "content": "请用 JSON 格式输出...只输出 JSON，不要其他文字。"}]
+```
+
+#### 方式 2：response_format JSON Schema 约束
+
+```python
+response_format={
+    "type": "json_schema",
+    "json_schema": {
+        "name": "code_review",
+        "schema": CODE_REVIEW_SCHEMA,
+    },
+}
+```
+
+#### 实验结果
+
+| 方式 | 样本解析 | 10 次连续调用 | Token 特征 |
+|------|----------|--------------|-----------|
+| Prompt 口头要求 | 3/3 ✅ | 10/10 ✅ | prompt 短，completion 长（模型可能加多余字段） |
+| JSON Schema | 3/3 ✅ | — | prompt 长（schema 注入），completion 短（约束严格） |
+
+#### 关键发现
+
+- qwen-plus 支持 JSON Schema mode（`response_format: json_schema`），无需降级
+- 两种方式在本实验中都达到了 100% 解析成功率
+- JSON Schema 的 completion token 更短——约束严格，模型不"自由发挥"
+- Prompt 口头要求时，模型有时会输出额外的未定义字段
+
+### `additionalProperties: false` 的作用
+
+- 禁止模型输出 schema 中未定义的额外字段
+- 确保输出严格符合预期结构，防止模型"自由发挥"
+- 这是构建可靠 Agent 的关键——下游代码依赖固定字段名
+
+### JSON 以外的结构化输出格式
+
+主流 LLM API 支持的输出格式：
+
+| 格式 | 参数 | 约束强度 |
+|------|------|----------|
+| **JSON Schema** | `response_format: {"type": "json_schema"}` | 最强（字段白名单 + 类型校验） |
+| **JSON Object** | `response_format: {"type": "json_object"}` | 中等（只保证合法 JSON，不约束字段） |
+| **工具调用** | `tools` 参数 | 强（本质是结构化的 JSON） |
+| **纯文本** | 默认 | 无约束 |
+
+**核心认知**：所有结构化输出都是 JSON 的变体。XML/YAML 等格式只能靠 prompt 要求，模型不保证 100% 正确。
+
+### `additionalProperties: false` 的适用范围
+
+- **仅适用于 JSON Schema**，是 JSON Schema 规范的标准字段
+- `json_object` 模式不传 schema，此参数不生效
+- 非 JSON 格式（YAML/XML）不生效
+
+本质就是"防盗门"——只放行我定义的字段，其他一律拒绝。不同格式的约束强度：JSON Schema（最强）> json_object（中等）> Prompt 口头要求（最弱）。
+
+---
+

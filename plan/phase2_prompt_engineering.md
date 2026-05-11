@@ -158,9 +158,9 @@ prompt_v2 = problem + "\n请一步步思考，先列出方程，再求解。"
 4. 实现一个场景：用结构化输出做代码审查报告（包含分类、严重等级、修复建议）
 
 **Milestone 4**：
-- [ ] 用 JSON Schema 约束输出，连续 10 次调用 100% 可解析
-- [ ] 对比 prompt 中口头要求 JSON vs 用 `response_format` 强制 JSON 的区别
-- [ ] 能解释 `additionalProperties: false` 的作用
+- [x] 用 JSON Schema 约束输出，连续 10 次调用 100% 可解析
+- [x] 对比 prompt 中口头要求 JSON vs 用 `response_format` 强制 JSON 的区别
+- [x] 能解释 `additionalProperties: false` 的作用
 
 ---
 
