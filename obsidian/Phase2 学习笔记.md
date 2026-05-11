@@ -234,3 +234,88 @@ messages.append({"role": "assistant", "content": reply})
 
 ---
 
+## Step 2：Few-Shot Prompting（少样本提示）
+
+### 实验：Zero-Shot vs Few-Shot 意图分类准确率对比
+
+代码在 `phase2_step2_few_shot.py`。
+
+任务：将用户输入分类为 query / command / chitchat / creative。
+
+#### 第一轮：10 个简单 case
+
+| 方式 | 正确率 |
+|------|--------|
+| Zero-Shot | 100% (10/10) |
+| 1-Shot | 100% (10/10) |
+| 3-Shot | 100% (10/10) |
+| 5-Shot | 100% (10/10) |
+
+结论：任务太简单，qwen-plus 本身就能区分，few-shot 没有提升空间。
+
+#### 第二轮：20 个 case（前 10 个简单，后 10 个模糊/边缘）
+
+| 方式 | 正确率 |
+|------|--------|
+| Zero-Shot | **95% (19/20)** |
+| 1-Shot | 90% (18/20) |
+| 3-Shot | 85% (17/20) |
+| 5-Shot | 85% (17/20) |
+
+**Few-shot 反而比 zero-shot 差**。
+
+#### 3 个共同错误 case 分析
+
+| 输入 | 期望 | Zero-Shot 结果 | Few-Shot 结果 | 原因 |
+|------|------|----------------|---------------|------|
+| 用 Python 写一个快速排序 | command | creative | creative | 类别边界模糊（写代码算 command 还是 creative？） |
+| 你觉得我应该学 Go 还是 Rust | chitchat | chitchat ✅ | query ❌ | zero-shot 判断正确，few-shot 反而带偏 |
+| 帮我分析一下这个日志 | command | command ✅ | query ❌ | zero-shot 判断正确，few-shot 反而带偏 |
+
+#### 关键发现
+
+- **过度依赖 few-shot**：有时候一个更好的 task description 比 5 个示例更有效
+- Few-shot 的示例如果不够覆盖边缘场景，反而会"带偏"模型
+- 示例越多，占用 context 空间也越多，增加 token 成本
+- 这与 [[Phase2 学习笔记#Prompt 的基本结构|Prompt 的核心要素]] 中提到的"示例 (few-shot)"是提升一致性的手段，但不是万能药——任务本身简单时不需要
+
+### Few-Shot 的实际使用策略
+
+**实际工作中的做法**：
+
+```
+zero-shot 跑 3-5 个 case
+  ├── 全对 → 够了，不加 few-shot（省 token）
+  └── 有错 → 加 few-shot 再跑
+        ├── 改善了 → 保留 few-shot
+        └── 更差了 → 回退，优化 task description
+```
+
+**不同场景下 few-shot 的有效性**：
+
+| 场景 | 谁更有效 | 原因 |
+|------|----------|------|
+| 类别边界清晰、任务简单 | Task Description | 模型不需要示例就能理解 |
+| 类别边界模糊、需要模仿格式 | Few-Shot | 光靠描述说不清"长什么样" |
+| 需要控制输出风格/语气 | Few-Shot | "请用专业语气"不如给一个专业示例 |
+| 模型对某类任务能力较弱 | Few-Shot | 示例相当于"教它怎么做" |
+
+**开发阶段的实践**：上线前跑 20-50 个 case 做验收，但开发阶段就是 3-5 个 case 快速试，不用一开始就跑大量 case。
+
+### Few-Shot 的本质定位
+
+- 模型本身不会的任务 → few-shot 是**雪中送炭**
+- 模型已经会的任务 → few-shot 是锦上添花（甚至可能添乱，如本次实验）
+
+### Few-Shot 示例与 Task Description 冲突时的优先级
+
+| 冲突类型 | 谁赢 | 原因 |
+|----------|------|------|
+| 描述说 A，示例全是 B | 示例赢 | 示例数量多，模式更明显，模型优先模仿 |
+| 描述说 A，1 个示例是 B | 看描述强度 | 描述很明确时可能还是听描述的 |
+| 描述模糊，示例清晰 | 示例赢 | 模型需要参考，描述没给方向 |
+
+**原则**：描述定方向，示例定细节。示例的权重通常比描述高，因为它更具体。
+
+---
+
