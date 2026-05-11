@@ -6,8 +6,8 @@
 
 | 阶段 | 内容 | 状态 |
 |------|------|------|
-| Phase 1 | LLM API 实操 | 进行中 |
-| Phase 2 | Prompt Engineering | 待开始 |
+| Phase 1 | LLM API 实操 | 已完成 |
+| Phase 2 | Prompt Engineering | 进行中 |
 | Phase 3 | RAG（检索增强生成） | 待开始 |
 | Phase 4 | Agent 框架 | 待开始 |
 | Phase 5 | 探索方向 | 待开始 |
@@ -26,15 +26,21 @@
 │   ├── phase5_exploration.md
 │   └── phase6_agent_testing_evaluation.md
 ├── code/                          # 实践代码
-│   └── phase1/
-│       ├── phase1_step1_api_call.py
-│       ├── phase1_step2_multiconversation.py
-│       ├── phase1_step3_structured_output.py
-│       ├── phase1_step4_function_calling.py
-│       ├── phase1_step5_multi_tool_routing.py
-│       └── assistant.py           # 阶段验收：CLI 智能助手
+│   ├── phase1/
+│   │   ├── phase1_step1_api_call.py
+│   │   ├── phase1_step2_multiconversation.py
+│   │   ├── phase1_step3_structured_output.py
+│   │   ├── phase1_step4_function_calling.py
+│   │   ├── phase1_step5_multi_tool_routing.py
+│   │   └── assistant.py           # 阶段验收：CLI 智能助手
+│   └── phase2/
+│       ├── phase2_step1_prompt_structure.py
+│       ├── phase2_step1b_system_vs_user.py
+│       ├── phase2_step1c_prompt_templates.py
+│       └── phase2_step2_few_shot.py
 ├── obsidian/                      # 学习笔记
-│   └── Phase1 学习笔记.md
+│   ├── Phase1 学习笔记.md
+│   └── Phase2 学习笔记.md
 └── .claude/
     └── CLAUDE.md                  # 项目约定与 Mentor 角色定义
 ```
