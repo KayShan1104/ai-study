@@ -4,7 +4,10 @@
       "Bash(python *)",
       "Bash(Get-ChildItem -Directory -Name)",
       "Bash(Select-String -Pattern \"obsidian\")",
-      "WebSearch"
+      "WebSearch",
+      "Bash(git reset *)",
+      "Bash(git commit *)",
+      "Bash(git add *)"
     ]
   }
 }
