@@ -42,7 +42,8 @@
 │       ├── phase2_step4_structured_output.py
 │       ├── phase2_step5_system_prompt.py
 │       ├── phase2_step5b_v3_and_code_guard.py
-│       └── phase2_step6_prompt_iteration.py
+│       ├── phase2_step6_prompt_iteration.py
+│       └── code_reviewer.py           # 阶段验收：结构化代码审查助手
 ├── obsidian/                      # 学习笔记
 │   ├── Phase1 学习笔记.md
 │   └── Phase2 学习笔记.md

@@ -699,3 +699,40 @@ def change_price(user_role, product_id, new_price, cost_price):
 | [[Phase2 学习笔记#Prompt 的基本结构|好 prompt 不一定长]] | V1 最短，效果最好 |
 
 ---
+
+## Phase 2 阶段验收：结构化代码审查助手
+
+代码在 `code/phase2/code_reviewer.py`。
+
+### 设计要点
+
+1. **Few-shot + CoT 结合**：prompt 中嵌入了 2 个审查示例（一个有问题的代码、一个正常代码），每个示例包含"思考"步骤，演示审查推理过程
+2. **JSON Schema 严格约束**：用 `response_format: json_schema` + `additionalProperties: false` 确保输出结构固定，下游程序可消费
+3. **分类输出**：security_issues、bug_issues、performance_issues 三个独立数组，按问题类型分类而非混在一起
+4. **常见代码模式审查规则**：在 system prompt 中显式定义了 SQL 注入、XSS、命令注入、可变默认参数、O(n^2) 循环、大文件读取、God class 等模式
+
+### 测试结果
+
+| 指标 | 结果 |
+|------|------|
+| JSON 解析成功率 | **20/20 (100%)** ✅ |
+| 总 Token 消耗 | 39,331 |
+| 单例平均 Token | ~1,966 |
+
+20 个测试用例全部通过，涵盖安全类 8 个、Bug 类 5 个、性能类 4 个、风格类 3 个。
+
+### 各用例 verdict 分布
+
+| Verdict | 数量 | 代表 |
+|---------|------|------|
+| reject | 11 | SQL 注入、XSS、命令注入、密码硬编码、除零等 |
+| request_changes | 5 | 循环 append、O(n²) 查找、冗余 if-else 等 |
+| approve | 2 | 列表推导+sum、实例变量独立 |
+
+### 关键观察
+
+- JSON Schema 模式保证了 100% 解析成功率，比 step4 中"口头要求 JSON"更可靠
+- few-shot CoT 示例中的 2 个例子（一个有问题、一个正常）已经足够让模型理解审查模式——不需要更多示例
+- 这与 Step 6 的结论一致：**简洁有效的 prompt + 严格的输出约束** = 最佳组合
+
+---
