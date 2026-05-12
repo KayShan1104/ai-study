@@ -654,7 +654,33 @@ def change_price(user_role, product_id, new_price, cost_price):
 
 5. **Token 成本 V3 是 V1 的 1.5 倍**——V3 比 V1 多了 ~4,300 token，但效果反而更差。
 
-### Prompt 调试的方法论
+### Prompt 调优技巧总结（Phase 2 全阶段）
+
+基于 6 个 step 的对比实验，总结出最常用的 3 条调优技巧：
+
+**技巧 1：Baseline 优先，能不加就不加**
+
+先跑 zero-shot baseline，确认模型表现后再决定是否需要加 few-shot、CoT 或额外规则。
+
+- Step 2：few-shot 反而降低准确率（100% → 85%），零样本反而最好
+- Step 6：V1 基础版 95%，加了 CoT 的 V3 反而降到 85%
+- 核心判断：模型本身已经会的任务，加了引导反而可能添乱
+
+**技巧 2：约束输出用 Schema，不靠口头说**
+
+需要结构化输出时，优先用 `response_format: json_schema` 而不是在 prompt 里口头描述格式。
+
+- Step 4：Schema 模式比 prompt 口头要求的 completion token 更短、结构更稳定
+- `additionalProperties: false` 是防盗门，防止模型输出未定义字段
+- 适用于所有需要下游程序解析的场景
+
+**技巧 3：短 prompt 优于长 prompt**
+
+不是"越详细越好"，冗余规则会稀释模型注意力。
+
+- Step 5 → Step 6：system prompt 从简单版扩充到完整版再扩展 CoT，verdict 正确率从 95% 降到 85%
+- Step 3：CoT token 消耗是 Direct 的 7-8 倍但准确率更低
+- 适用场景：模型已训练过的任务（代码审查、意图分类、数学计算）用短 prompt；需要模仿特定输出风格时才加 few-shot
 
 从这次实验中学到的系统化调优方法：
 
