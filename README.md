@@ -7,7 +7,7 @@
 | 阶段 | 内容 | 状态 |
 |------|------|------|
 | Phase 1 | LLM API 实操 | 已完成 |
-| Phase 2 | Prompt Engineering | 进行中 |
+| Phase 2 | Prompt Engineering | 已完成 |
 | Phase 3 | RAG（检索增强生成） | 待开始 |
 | Phase 4 | Agent 框架 | 待开始 |
 | Phase 5 | 探索方向 | 待开始 |
@@ -37,7 +37,12 @@
 │       ├── phase2_step1_prompt_structure.py
 │       ├── phase2_step1b_system_vs_user.py
 │       ├── phase2_step1c_prompt_templates.py
-│       └── phase2_step2_few_shot.py
+│       ├── phase2_step2_few_shot.py
+│       ├── phase2_step3_cot.py
+│       ├── phase2_step4_structured_output.py
+│       ├── phase2_step5_system_prompt.py
+│       ├── phase2_step5b_v3_and_code_guard.py
+│       └── phase2_step6_prompt_iteration.py
 ├── obsidian/                      # 学习笔记
 │   ├── Phase1 学习笔记.md
 │   └── Phase2 学习笔记.md
