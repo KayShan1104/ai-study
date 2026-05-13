@@ -632,4 +632,109 @@ query 中的抽象词（"最佳"、"怎么"、"如何"）会把 embedding 向量
 2. **提供明确的评分 rubric**：不只"1-5 分"，而是每一分有具体标准（如"5分=包含所有3个关键信息，4分=包含2个，3分=包含1个"）
 3. **混合评分**：LLM-as-Judge + 关键词匹配（检查回答是否包含 expected_key_points 中的关键词）
 
+## Step 6：RAG 进阶技巧
+
+### Query Rewriting（查询重写）
+
+让 LLM 把模糊 query 改写为更具体的子问题，再去检索：
+
+```python
+# 原始: "Prompt Engineering 有什么最佳实践？"
+# 重写: ["Prompt Engineering 技巧", "few-shot 示例方法", "function calling 用法"]
+```
+
+实现方式：prompt 要求 LLM 去掉抽象词（"最佳"、"怎么"），使用具体技术术语。多个改写后的 query 分别搜索，合并去重后取 top-k。
+
+**Tradeoff**：多一次 LLM 调用，增加延迟和成本。
+
+### Re-ranking（重排序）
+
+先放宽召回（expand_k=5），再用 LLM 对候选文档做相关度排序，取 top_k：
+
+```python
+# 第一步：语义搜索 5 个候选
+candidates = vector_search(query, n_results=5)
+# 第二步：LLM 评估每个候选与 query 的相关度，排序
+ranked = rerank(query, candidates)
+# 第三步：取前 3 个
+return ranked[:3]
+```
+
+**Tradeoff**：多一次 LLM 推理，但只跑了 1 次（评 5 个文档），不是 5 次。
+
+### 优化文档内容（修复检索失败）
+
+Step 5 中"Prompt Engineering 最佳实践"检索失败，原因是 doc_07 的标题有"最佳实践"但内容里没有这四个字。
+
+修复方法：在内容开头加上"Prompt Engineering 最佳实践包括以下技巧"，让标题和内容的关键词对齐。
+
+修复后效果：Step 5 的 1/5 → Step 6 的 5/5。**这是最简单的优化，但只适用于你能控制知识库的场景。**
+
+### 三种策略对比实验
+
+| 策略 | 平均分 | 好结果(≥4) | 说明 |
+|------|-------|-----------|------|
+| 基线（直接语义搜索） | 4.77/5 | 13/13 | 小知识库基线已很强 |
+| Query Rewriting | 4.77/5 | 13/13 | 持平——小知识库 query 已够准 |
+| Re-ranking | **4.85/5** | 13/13 | 略微提升——排序更精准 |
+
+**结论**：
+- 在小知识库（8 篇）中，基线已很强，进阶技巧提升有限
+- Re-ranking 是性价比最高的优化——只需多一次 LLM 调用，排序效果改善
+- Query Rewriting 在大规模知识库中效果更明显
+- **优化文档内容是最简单有效的优化**，但只适用于可控知识库
+
+### RAGAS 评估框架
+
+RAGAS（RAG Assessment）是专门的 RAG 评估 Python 库：
+
+```bash
+pip install ragas
+```
+
+**核心指标**：
+
+| 指标 | 评估什么 |
+|------|---------|
+| Faithfulness | 回答是否基于检索内容（分解为声明逐个验证）|
+| Answer Relevance | 回答是否切题（从回答生成假设问题匹配）|
+| Context Precision | 检索到的 chunk 是否相关（按排名加权）|
+| **Context Recall** | 检索是否召回了所有必要信息（对比参考答案）|
+
+**和手写 LLM-as-Judge 的区别**：
+- RAGAS 的 Faithfulness 更严格：把回答分解为独立声明，逐个检查是否可从上下文推导
+- RAGAS 有 **Context Recall**：需要参考答案（ground truth），评估"检索覆盖了多少关键信息"
+- 内置评估 pipeline + 统计报告，但学习成本更高
+
+**基本用法**：
+```python
+from ragas import evaluate
+from ragas.metrics import faithfulness, answer_relevance, context_precision
+
+result = evaluate(dataset, metrics=[faithfulness, answer_relevance, context_precision])
+```
+
+**RAGAS 分数反映的是哪个环节的问题**：
+
+| 指标组合 | 说明 |
+|---------|------|
+| Context Precision/Recall 低 + Faithfulness 高 | 检索错了，但 LLM 很老实 → 优化检索策略 |
+| Context Precision 高 + Faithfulness 低 | 检索对了，但 LLM 在瞎编 → 优化 prompt 约束 |
+| Context Recall 低 + Answer Relevance 低 | 漏了关键文档，回答不完整 → 增加 top_k 或换检索方式 |
+| 四个都高 | 整体都好 |
+
+### Chunking vs 检索优化：哪个收益更大？
+
+**结论：Chunking 是地基，检索优化是锦上添花。**
+
+| 优化环节 | 提升幅度 | 说明 |
+|---------|---------|------|
+| 差 Chunk → 好 Chunk | **+30~40分** | 质的飞跃，Garbage In, Garbage Out |
+| 好 Chunk → 加混合检索 | +5~10分 | 锦上添花 |
+| 混合检索 → 加 Rerank | +3~5分 | 边际改善 |
+
+**类比**：好 Chunk = 图书馆的书分类正确、内容完整；好检索 = 高级索引系统。索引再先进，也弥补不了书被撕了半页的问题。
+
+**正确优化顺序**：Chunking → 探针测试 → 检索策略 → Reranking。每步做完再考虑下一步。
+
 ---

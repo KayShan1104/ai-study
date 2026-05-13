@@ -230,9 +230,9 @@ for qa_pair in test_cases:
 3. 了解 RAGAS 评估框架（`pip install ragas`）
 
 **Milestone 6**：
-- [ ] 实现至少 1 种进阶技巧
-- [ ] 优化后评估分数有提升（哪怕只提升 0.1 分）
-- [ ] 了解 RAGAS 的基本用法
+- [x] 实现至少 1 种进阶技巧
+- [x] 优化后评估分数有提升（哪怕只提升 0.1 分）
+- [x] 了解 RAGAS 的基本用法
 
 ---
 
