@@ -129,10 +129,10 @@ print(results["documents"])
 4. 了解 overlap 的作用：避免关键信息被切分在两个 chunk 之间
 
 **Milestone 3**：
-- [ ] 用一篇文章（比如你自己的项目 README）做 chunking 实验
-- [ ] 对比 3 种不同 chunk_size 的检索结果
-- [ ] 能解释为什么需要 chunk_overlap
-- [ ] 了解语义 chunking（按段落/标题切分 vs 按字符数切分）
+- [x] 用一篇文章（比如你自己的项目 README）做 chunking 实验
+- [x] 对比 3 种不同 chunk_size 的检索结果
+- [x] 能解释为什么需要 chunk_overlap
+- [x] 了解语义 chunking（按段落/标题切分 vs 按字符数切分）
 
 ---
 
