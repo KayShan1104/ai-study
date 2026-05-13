@@ -27,3 +27,6 @@ wheels/
 venv/
 env/
 ENV/
+
+# Chroma 向量数据库数据（只保留代码，不提交数据）
+code/phase3/chroma_data*/

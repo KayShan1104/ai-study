@@ -67,7 +67,7 @@ def get_embedding(text: str) -> list[float]:
 
 
 def build_index(documents: list[dict]) -> chromadb.Collection:
-    chroma_client = chromadb.PersistentClient(path="./chroma_data_step6")
+    chroma_client = chromadb.PersistentClient(path=os.path.join(os.path.dirname(__file__), "chroma_data_step6"))
     try:
         chroma_client.delete_collection("rag_docs")
     except Exception:

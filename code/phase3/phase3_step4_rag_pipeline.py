@@ -100,7 +100,7 @@ def build_index(documents: list[dict]) -> chromadb.Collection:
     print("  [索引阶段] 构建知识库索引...")
 
     # 删除旧集合
-    chroma_client = chromadb.PersistentClient(path="./chroma_data_step4")
+    chroma_client = chromadb.PersistentClient(path=os.path.join(os.path.dirname(__file__), "chroma_data_step4"))
     try:
         chroma_client.delete_collection("rag_docs")
     except Exception:

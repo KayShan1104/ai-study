@@ -80,7 +80,7 @@ def main():
     print("  " + "-" * 50)
 
     # PersistentClient 数据持久化到磁盘，Client 是内存中的
-    chroma_client = chromadb.PersistentClient(path="./chroma_data")
+    chroma_client = chromadb.PersistentClient(path=os.path.join(os.path.dirname(__file__), "chroma_data_step1"))
 
     # 删除旧集合避免重复
     try:

@@ -40,7 +40,9 @@ CHAT_MODEL = "qwen-plus"
 class Indexer:
     """索引阶段：文档读取 → 按标题切分 → 生成 embedding → 存入 Vector DB。"""
 
-    def __init__(self, db_path: str = "./chroma_data_acceptance"):
+    def __init__(self, db_path: str = None):
+        if db_path is None:
+            db_path = os.path.join(os.path.dirname(__file__), "chroma_data_acceptance")
         self.client = chromadb.PersistentClient(path=db_path)
         self.collection_name = "phase3_acceptance"
         self.collection = self._get_or_create_collection()
