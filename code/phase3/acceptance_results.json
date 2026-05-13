@@ -1,0 +1,182 @@
+[
+  {
+    "question": "OpenAI 兼容格式的 base_url 是什么？",
+    "passed": false,
+    "retrieved": [
+      "Phase3 学习笔记.md#语义搜索实验结果（22 篇技术文档，5 个查询）",
+      "Phase3 学习笔记.md#检索质量 = RAG 的上限"
+    ],
+    "answer_snippet": "根据现有文档资料，我没有找到相关信息。"
+  },
+  {
+    "question": "qwen-plus 和 qwen-turbo 有什么区别？",
+    "passed": false,
+    "retrieved": [
+      "Phase1 学习笔记.md#qwen-plus 价格（2025-2026 官方定价）",
+      "Phase1 学习笔记.md#模型上下文窗口"
+    ],
+    "answer_snippet": "根据现有文档资料，我没有找到相关信息。"
+  },
+  {
+    "question": "API 调用失败返回 401 怎么解决？",
+    "passed": false,
+    "retrieved": [
+      "Phase1 学习笔记.md#Step 1：第一次 API 调用",
+      "Phase1 学习笔记.md#常见误区"
+    ],
+    "answer_snippet": "根据现有文档资料，我没有找到相关信息。"
+  },
+  {
+    "question": "Function Calling 的基本流程是什么？",
+    "passed": true,
+    "retrieved": [
+      "Phase1 学习笔记.md#Function Calling 的本质",
+      "Phase1 学习笔记.md#Function Calling"
+    ],
+    "answer_snippet": "Function Calling 的基本流程如下：\n\n1. **模型作为决策者**：LLM 根据用户输入和上下文，判断是否需要调用外部工具，并决定调用哪个工具、"
+  },
+  {
+    "question": "如何限制 LLM 的生成 token 数量？",
+    "passed": true,
+    "retrieved": [
+      "Phase1 学习笔记.md#节省 Token 策略",
+      "Phase3 学习笔记.md#Re-ranking（重排序）"
+    ],
+    "answer_snippet": "可以通过设置 `max_tokens` 参数来限制 LLM 的生成 token 数量，该参数用于控制模型输出的上限 [1]。"
+  },
+  {
+    "question": "temperature 参数影响什么？",
+    "passed": true,
+    "retrieved": [
+      "Phase1 学习笔记.md#temperature 参数详解",
+      "Phase1 学习笔记.md#实验：4 工具路由正确率测试"
+    ],
+    "answer_snippet": "temperature 参数影响模型输出的**随机性与创造性程度**：\n\n- 值越低（如 0），输出越**确定、稳定、一致**，适合事实性、准确性要求高的任务 "
+  },
+  {
+    "question": "system prompt 和 user prompt 的区别是什么？",
+    "passed": true,
+    "retrieved": [
+      "Phase2 学习笔记.md#实验：System Prompt 迭代（V1 简单版 → V2 完整版）",
+      "Phase2 学习笔记.md#System vs User 中的角色定义对比实验"
+    ],
+    "answer_snippet": "system prompt 和 user prompt 的区别主要体现在**作用域、优先级、功能定位和生效方式**上，具体如下：\n\n1. **作用域不同**  "
+  },
+  {
+    "question": "Few-shot prompting 是什么？",
+    "passed": true,
+    "retrieved": [
+      "Phase2 学习笔记.md#Step 2：Few-Shot Prompting（少样本提示）",
+      "Phase2 学习笔记.md#Few-Shot 的实际使用策略"
+    ],
+    "answer_snippet": "Few-shot prompting（少样本提示）是一种提示工程方法，通过在提示中提供少量任务相关的示例（即“few-shot”示例），帮助模型理解任务要求并生"
+  },
+  {
+    "question": "Chain of Thought (CoT) 怎么用？",
+    "passed": true,
+    "retrieved": [
+      "Phase2 学习笔记.md#Step 3：Chain-of-Thought (CoT，思维链)",
+      "Phase2 学习笔记.md#Zero-shot CoT 的触发方式"
+    ],
+    "answer_snippet": "Chain of Thought (CoT) 的使用方式在参考资料中明确提到了一种具体操作步骤和触发方式：\n\n- 在 Step 3 中指出，CoT 是一个关键步"
+  },
+  {
+    "question": "JSON 输出格式怎么保证？",
+    "passed": true,
+    "retrieved": [
+      "Phase2 学习笔记.md#JSON 以外的结构化输出格式",
+      "Phase1 学习笔记.md#try/except 处理模型格式错误"
+    ],
+    "answer_snippet": "JSON 输出格式的保证主要通过以下两种方式实现：\n\n1. **API 层结构化输出参数**：主流 LLM API 提供 `response_format` 参"
+  },
+  {
+    "question": "Prompt 太长怎么处理？",
+    "passed": true,
+    "retrieved": [
+      "Phase2 学习笔记.md#实验：System Prompt 迭代（V1 简单版 → V2 完整版）",
+      "Phase2 学习笔记.md#Prompt 调优技巧总结（Phase 2 全阶段）"
+    ],
+    "answer_snippet": "根据参考资料，Prompt 太长时应进行精简，因为“短 prompt 优于长 prompt”[2]。冗余规则会稀释模型注意力，反而降低效果。\n\n具体处理方法包括"
+  },
+  {
+    "question": "结构化输出 prompt 怎么设计？",
+    "passed": true,
+    "retrieved": [
+      "Phase1 学习笔记.md#Structured Output（结构化输出）",
+      "Phase2 学习笔记.md#常用 Prompt 模板总结"
+    ],
+    "answer_snippet": "结构化输出 prompt 的设计方式如下：\n\n- **系统角色设定**：使用 `\"system\"` 角色明确模型身份，例如 `\"你是一个数据提取助手。\"` [2"
+  },
+  {
+    "question": "如何减少 LLM 的幻觉？",
+    "passed": false,
+    "retrieved": [
+      "Phase3 学习笔记.md#常见误解澄清",
+      "Phase3 学习笔记.md#LLM-as-Judge 评分宽松问题"
+    ],
+    "answer_snippet": "根据现有文档资料，我没有找到相关信息。"
+  },
+  {
+    "question": "代码审查 prompt 应该包含什么？",
+    "passed": true,
+    "retrieved": [
+      "Phase2 学习笔记.md#设计要点",
+      "Phase2 学习笔记.md#实验：代码审查 Prompt 的 3 轮迭代"
+    ],
+    "answer_snippet": "根据参考资料，代码审查 prompt 应该包含以下要素：\n\n1. **Few-shot + Chain-of-Thought（CoT）示例**：嵌入 2 个审查"
+  },
+  {
+    "question": "React 的 useState 怎么用？",
+    "passed": true,
+    "retrieved": [
+      "Phase1 学习笔记.md#详细说明",
+      "Phase2 学习笔记.md#Few-Shot 的实际使用策略"
+    ],
+    "answer_snippet": "根据现有文档资料，我没有找到相关信息。"
+  },
+  {
+    "question": "Docker Compose 的配置文件怎么写？",
+    "passed": true,
+    "retrieved": [
+      "Phase3 学习笔记.md#复杂文档（PDF/代码/配置文件）的 Chunking 策略",
+      "Phase1 学习笔记.md#架构设计"
+    ],
+    "answer_snippet": "根据现有文档资料，我没有找到相关信息。"
+  },
+  {
+    "question": "Kubernetes 的 Deployment 是什么？",
+    "passed": true,
+    "retrieved": [
+      "Phase3 学习笔记.md#为什么需要 Chunking",
+      "Phase3 学习笔记.md#Embedding 是什么"
+    ],
+    "answer_snippet": "根据现有文档资料，我没有找到相关信息。"
+  },
+  {
+    "question": "MySQL 8.0 的新特性有哪些？",
+    "passed": false,
+    "retrieved": [
+      "Phase3 学习笔记.md#MySQL vs PostgreSQL 作为向量数据库",
+      "Phase3 学习笔记.md#RAG 检索优化方案"
+    ],
+    "answer_snippet": "根据参考资料，MySQL 8.0 的新特性中明确提及的是：**2024 年 MySQL 8.0.31 版本实验性支持向量距离函数** [1]。\n\n需要注意的是："
+  },
+  {
+    "question": "Vue3 和 Vue2 的区别？",
+    "passed": true,
+    "retrieved": [
+      "Phase2 学习笔记.md#V3: 显式加入 Prompt Injection 防御规则",
+      "Phase2 学习笔记.md#实验：代码审查 Prompt 的 3 轮迭代"
+    ],
+    "answer_snippet": "根据现有文档资料，我没有找到相关信息。"
+  },
+  {
+    "question": "Go 语言的 goroutine 是什么？",
+    "passed": true,
+    "retrieved": [
+      "Phase2 学习笔记.md#CoT 的本质机制",
+      "Phase1 学习笔记.md#system / user / assistant 三个角色"
+    ],
+    "answer_snippet": "根据现有文档资料，我没有找到相关信息。"
+  }
+]
