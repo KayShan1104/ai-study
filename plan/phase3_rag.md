@@ -101,10 +101,10 @@ print(results["documents"])
 4. 对比：用关键词搜索（看是否包含"Python"这个词）vs 语义搜索（理解"Web 框架"的意思）
 
 **Milestone 2**：
-- [ ] 成功存入 20+ 条文档，查询结果语义相关
-- [ ] 对比关键词搜索和语义搜索的差异
-- [ ] 理解为什么"Python Web 框架"能搜到"Flask 是轻量级框架"（即使没有完全匹配的词）
-- [ ] 了解 Chroma 之外还有哪些 Vector DB（Pinecone、Qdrant、Weaviate、Milvus），它们各自的特点
+- [x] 成功存入 20+ 条文档，查询结果语义相关
+- [x] 对比关键词搜索和语义搜索的差异
+- [x] 理解为什么"Python Web 框架"能搜到"Flask 是轻量级框架"（即使没有完全匹配的词）
+- [x] 了解 Chroma 之外还有哪些 Vector DB（Pinecone、Qdrant、Weaviate、Milvus），它们各自的特点
 
 ---
 

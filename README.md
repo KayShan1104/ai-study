@@ -8,7 +8,7 @@
 |------|------|------|
 | Phase 1 | LLM API 实操 | 已完成 |
 | Phase 2 | Prompt Engineering | 已完成 |
-| Phase 3 | RAG（检索增强生成） | 待开始 |
+| Phase 3 | RAG（检索增强生成） | 进行中 |
 | Phase 4 | Agent 框架 | 待开始 |
 | Phase 5 | 探索方向 | 待开始 |
 | Phase 6 | Agent 测试与评估 | 待开始 |
@@ -33,20 +33,23 @@
 │   │   ├── phase1_step4_function_calling.py
 │   │   ├── phase1_step5_multi_tool_routing.py
 │   │   └── assistant.py           # 阶段验收：CLI 智能助手
-│   └── phase2/
-│       ├── phase2_step1_prompt_structure.py
-│       ├── phase2_step1b_system_vs_user.py
-│       ├── phase2_step1c_prompt_templates.py
-│       ├── phase2_step2_few_shot.py
-│       ├── phase2_step3_cot.py
-│       ├── phase2_step4_structured_output.py
-│       ├── phase2_step5_system_prompt.py
-│       ├── phase2_step5b_v3_and_code_guard.py
-│       ├── phase2_step6_prompt_iteration.py
-│       └── code_reviewer.py           # 阶段验收：结构化代码审查助手
+│   ├── phase2/
+│   │   ├── phase2_step1_prompt_structure.py
+│   │   ├── phase2_step1b_system_vs_user.py
+│   │   ├── phase2_step1c_prompt_templates.py
+│   │   ├── phase2_step2_few_shot.py
+│   │   ├── phase2_step3_cot.py
+│   │   ├── phase2_step4_structured_output.py
+│   │   ├── phase2_step5_system_prompt.py
+│   │   ├── phase2_step5b_v3_and_code_guard.py
+│   │   ├── phase2_step6_prompt_iteration.py
+│   │   └── code_reviewer.py       # 阶段验收：结构化代码审查助手
+│   └── phase3/
+│       └── phase3_step1_embedding.py
 ├── obsidian/                      # 学习笔记
 │   ├── Phase1 学习笔记.md
-│   └── Phase2 学习笔记.md
+│   ├── Phase2 学习笔记.md
+│   └── Phase3 学习笔记.md
 └── .claude/
     └── CLAUDE.md                  # 项目约定与 Mentor 角色定义
 ```
