@@ -1,0 +1,242 @@
+[
+  {
+    "question": "qwen-plus 多少钱？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "qwen-plus 计费标准",
+      "API 速率限制"
+    ],
+    "answer": "qwen-plus 的计费标准为：输入 0.004 元/千 token，输出 0.012 元/千 token，按输入 + 输出的总 token 数计费 [1]。",
+    "context_precision": 5,
+    "context_precision_reason": "文档明确给出了qwen-plus的计费标准（输入0.004元/千token，输出0.012元/千token），直接回答了‘多少钱’这一价格问题，信息完整且高度相关。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答准确复现了参考资料中关于qwen-plus计费标准的所有关键信息（输入0.004元/千token、输出0.012元/千token、按输入+输出总token数计费），未添加任何参考资料未提及的内容，无编造。",
+    "answer_relevance": 5,
+    "answer_relevance_reason": "用户问‘qwen-plus 多少钱’，回答明确给出了输入和输出的单价（元/千token）及计费方式，信息准确、具体、直接回应了价格问题，无冗余或缺失关键要素。"
+  },
+  {
+    "question": "百炼平台有哪些模型？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "百炼平台模型选型",
+      "OpenAI 兼容格式调用"
+    ],
+    "answer": "百炼平台提供的模型包括：  \n- qwen-turbo（速度最快，成本最低，适合简单任务）  \n- qwen-plus（平衡性能和成本，推荐默认选择）  \n- qwen-max（能力最强，适合复杂推理和代码生成）  \n- qwen-vl（多模态，支持图像理解）[1]",
+    "context_precision": 5,
+    "context_precision_reason": "文档第一项明确列出了百炼平台提供的全部模型（qwen-turbo、qwen-plus、qwen-max、qwen-vl）及其关键特性，完全覆盖用户问题‘百炼平台有哪些模型’的核心需求；第二项虽侧重API调用方式，但上下文仍属于百炼平台能力范畴，且未引入无关信息，整体高度相关且信息完整。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答完整、准确复述了参考资料中列出的四个模型及其对应描述，未添加、删减或歪曲任何信息，括号内的说明与参考资料完全一致，且标注[1]仅作引用标识，未引入外部事实。",
+    "answer_relevance": 5,
+    "answer_relevance_reason": "回答完整列出了百炼平台当前提供的四款核心模型（qwen-turbo、qwen-plus、qwen-max、qwen-vl），并简要说明了各自定位和适用场景，准确对应用户‘有哪些模型’的询问，无遗漏、无错误、信息明确。"
+  },
+  {
+    "question": "API 调用频率限制是多少？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "常见错误码处理",
+      "API 速率限制"
+    ],
+    "answer": "API 调用频率限制（即默认 QPS 限制）如下：  \n- qwen-turbo 为 100 QPS，  \n- qwen-plus 为 60 QPS，  \n- qwen-max 为 30 QPS。  \n如需更高并发，可在控制台申请提升配额 [2]。",
+    "context_precision": 5,
+    "context_precision_reason": "两段文档均直接回答API调用频率限制：第一段指出429错误码对应速率限制，并提示降低频率或申请配额；第二段明确给出各模型的默认QPS限制数值及配额提升途径，信息完整且高度相关。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答完整、准确地复述了参考资料中关于各模型QPS限制的数值（100/60/30）、提升配额的方式（控制台申请），且未添加任何参考资料未提及的信息（如具体时间窗口、用户级/令牌级限制细节、配额审批周期等），错误码429的含义虽在参考资料中出现，但回答未重复该信息，属合理精简；引用标记[2]为格式性标注，不构成事实性编造。",
+    "answer_relevance": 5,
+    "answer_relevance_reason": "回答明确给出了不同模型（qwen-turbo、qwen-plus、qwen-max）对应的API调用频率限制（QPS值），并补充了提升配额的途径，完全覆盖用户关于‘API调用频率限制’的核心询问，信息准确、具体、无歧义。"
+  },
+  {
+    "question": "触发速率限制怎么办？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "API 速率限制",
+      "常见错误码处理"
+    ],
+    "answer": "触发速率限制（错误码 429）时，应降低请求频率，或在控制台申请提升配额 [1]。同时，建议在代码中对 429 错误进行异常处理，例如添加重试机制或限流控制 [2]。",
+    "context_precision": 5,
+    "context_precision_reason": "两篇文档均直接回应‘触发速率限制怎么办’：第一篇说明默认QPS限制、错误码429含义及配额提升途径；第二篇明确将429定义为速率限制，并给出具体应对措施（降低请求频率、申请配额）和代码异常处理建议，信息完整且高度相关。",
+    "faithfulness": 4,
+    "faithfulness_reason": "回答核心内容（降低请求频率、控制台申请配额、代码中处理429）均来自参考资料；补充的‘重试机制或限流控制’虽未在原文逐字出现，但属于对‘建议在代码中处理这些异常’的合理技术延伸，未违背原文意图，属少量未经直接验证但符合上下文的合理推论。",
+    "answer_relevance": 5,
+    "answer_relevance_reason": "回答准确指出触发速率限制（429）的应对措施：降低请求频率、申请配额提升、代码中异常处理（重试/限流），覆盖操作层面和工程实践，简洁完整。"
+  },
+  {
+    "question": "429 错误码什么意思？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "常见错误码处理",
+      "API 速率限制"
+    ],
+    "answer": "429 错误码表示速率限制（即请求过于频繁，超出了允许的配额）[1]。当触发该错误时，应降低请求频率，或在控制台申请提升配额[2]。",
+    "context_precision": 5,
+    "context_precision_reason": "两份文档均明确指出429错误码表示速率限制（或超出速率限制），并补充了应对措施（如降低请求频率、申请配额），信息准确、完整且高度相关。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答准确复现了参考资料中关于429错误码的定义（速率限制）、原因（请求过于频繁/超出配额）及应对措施（降低请求频率、控制台申请提升配额），所有内容均在两段参考资料中明确提及，无任何编造或引申。",
+    "answer_relevance": 5,
+    "answer_relevance_reason": "回答准确指出429错误码的含义是速率限制，并说明了触发原因（请求过于频繁、超出配额）和基本应对措施（降低频率或申请提升配额），简洁完整，符合HTTP标准定义。"
+  },
+  {
+    "question": "text-embedding-v3 有什么用？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "Embedding API 使用",
+      "Prompt Engineering 最佳实践"
+    ],
+    "answer": "text-embedding-v3 可用于语义搜索、聚类、文本分类，它生成的是 1024 维向量 [1]。",
+    "context_precision": 4,
+    "context_precision_reason": "第一段文档明确说明了text-embedding-v3的用途（生成1024维向量）和典型应用场景（语义搜索、聚类、文本分类），完全覆盖问题核心；第二段文档讨论Prompt Engineering，与问题无关，但相关文档占多数且信息准确完整。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答准确复现了参考资料中关于text-embedding-v3的用途（语义搜索、聚类、文本分类）和输出维度（1024维向量），未添加任何参考资料未提及的信息，也未曲解或遗漏关键事实。",
+    "answer_relevance": 4,
+    "answer_relevance_reason": "回答指出了text-embedding-v3的核心用途（语义搜索、聚类、文本分类）和输出特征（1024维向量），基本覆盖了‘有什么用’这一问题；但未说明其相较于前代（如v2）的关键改进（如更优的性能、多语言支持、可调节维度、成本效率等），也未提及其典型应用场景（如RAG、推荐系统）或适用平台（如OpenAI API），属少量不足。"
+  },
+  {
+    "question": "Embedding 向量多少维？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "Embedding API 使用",
+      "百炼平台模型选型"
+    ],
+    "answer": "Embedding 向量是 1024 维 [1]。",
+    "context_precision": 5,
+    "context_precision_reason": "第一段文档明确指出text-embedding-v3模型生成1024维向量，直接回答了'Embedding向量多少维'这一核心问题；第二段虽讨论百炼平台模型选型，但未提及维度信息，与问题无关；但评估标准是'检索到的参考文档是否包含用户问题所需的答案信息'，而第一段已完整、准确提供答案，且为唯一相关文档，故满足'所有相关文档（即实际提供答案的文档）高度相关、信息完整'，得5分。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答‘Embedding 向量是 1024 维’完全对应参考资料中‘text-embedding-v3 模型生成 1024 维向量’的明确陈述，未添加任何参考资料未提及的信息（如未提及其他模型维度，未对‘1024维’作解释或推断），且标注[1]可合理对应第一处参考资料。",
+    "answer_relevance": 5,
+    "answer_relevance_reason": "回答直接、明确地给出了Embedding向量的维度（1024维），并附有引用标记，完全匹配用户关于‘多少维’的询问，无冗余、无歧义、无遗漏。"
+  },
+  {
+    "question": "怎么写 Function Calling？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "Function Calling 使用",
+      "Prompt Engineering 最佳实践"
+    ],
+    "answer": "要写 Function Calling，需按以下步骤操作：\n\n1. **定义函数 schema**：包括函数的 `name`（名称）、`description`（描述）和 `parameters`（参数）[1]。  \n2. **在 API 调用中传入 `tools` 参数**：将定义好的函数 schema 作为 `tools` 传入 `chat.completions.create` [1]。  ",
+    "context_precision": 4,
+    "context_precision_reason": "第一篇文档直接回答了‘怎么写 Function Calling’，涵盖定义 schema、传入 tools 参数、处理 tool_calls 等核心步骤；第二篇提及 function calling 用于保证 JSON 格式，属相关但非操作指导，信息次要且不完整。整体覆盖主要要点，但缺少具体代码示例或参数细节。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答严格依据参考资料：步骤1-3完全对应[Function Calling 使用]条目；步骤4中‘将执行结果回传’虽未在原文用‘tool_responses’一词，但‘客户端执行后传回结果’已明确涵盖该动作，术语‘tool_responses’是合理且常见的标准表述（如OpenAI API文档），不属于编造；最后补充的JSON格式用途直接引用[2]原文‘JSON 输出用 function calling 保证格式’。无任何事实性编造或过度推断。",
+    "answer_relevance": 5,
+    "answer_relevance_reason": "回答完整覆盖了Function Calling的核心实现步骤：定义schema、传入tools、处理tool_calls响应、回传tool_responses，并补充了适用场景和最佳实践，准确切题且无关键遗漏。"
+  },
+  {
+    "question": "OpenAI 兼容格式的 base_url 是什么？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "OpenAI 兼容格式调用",
+      "常见错误码处理"
+    ],
+    "answer": "OpenAI 兼容格式的 `base_url` 是 `https://dashscope.aliyuncs.com/compatible-mode/v1` [1]。",
+    "context_precision": 5,
+    "context_precision_reason": "文档明确给出了OpenAI兼容格式的base_url：https://dashscope.aliyuncs.com/compatible-mode/v1，并说明了其在OpenAI客户端中的使用方式，完全匹配用户问题需求。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答准确复现了参考资料中明确给出的 base_url 值，未添加任何参考资料未提及的信息，也未编造解释、上下文或额外细节。",
+    "answer_relevance": 5,
+    "answer_relevance_reason": "回答直接、准确地给出了 OpenAI 兼容格式的 base_url，即 https://dashscope.aliyuncs.com/compatible-mode/v1，并明确标注了来源，完全匹配用户问题的核心诉求。"
+  },
+  {
+    "question": "401 错误怎么处理？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "常见错误码处理",
+      "API 速率限制"
+    ],
+    "answer": "401 错误表示 API Key 无效，应检查密钥配置是否正确 [1]。",
+    "context_precision": 4,
+    "context_precision_reason": "文档1明确指出401错误是'API Key 无效'，并给出处理建议'检查密钥配置'和'在代码中处理异常'，直接回答了问题核心；文档2虽聚焦429错误，与401无关，但整体检索结果中主要相关文档覆盖了问题要点，信息基本完整。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答‘401 错误表示 API Key 无效，应检查密钥配置是否正确’完全对应参考资料中‘401 API Key 无效（检查密钥配置）’的表述，未添加任何参考资料未提及的信息，无编造。",
+    "answer_relevance": 2,
+    "answer_relevance_reason": "仅提及API Key无效这一种常见原因，未覆盖401错误的本质（未授权）、典型场景（如缺失/过期Token、认证头错误、权限不足）、通用排查步骤（检查Authorization头、凭证有效性、服务端配置）及解决方法（重发凭证、刷新Token、检查权限），内容过于单薄，缺乏实用性指导。"
+  },
+  {
+    "question": "qwen-max 适合什么场景？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "百炼平台模型选型",
+      "API 速率限制"
+    ],
+    "answer": "qwen-max 适合复杂推理和代码生成等场景 [1]。",
+    "context_precision": 5,
+    "context_precision_reason": "第一段文档明确指出qwen-max‘能力最强，适合复杂推理和代码生成’，直接回答了其适用场景；第二段虽侧重速率限制，但提及qwen-max的QPS为30，隐含其资源消耗高、适用于对性能要求高而非高并发的场景，侧面补充了适用条件，整体信息完整且高度相关。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答‘qwen-max 适合复杂推理和代码生成等场景’完全对应参考资料中‘qwen-max（能力最强，适合复杂推理和代码生成）’的表述，未添加任何参考资料未提及的信息，无编造。",
+    "answer_relevance": 3,
+    "answer_relevance_reason": "回答指出了‘复杂推理’和‘代码生成’两个场景，但未说明原因（如高推理能力、长上下文支持、多语言/多模态适配性等），也未对比其他Qwen模型（如qwen-plus、qwen-turbo）以体现‘max’的定位差异，缺乏典型应用示例（如数学证明、大型代码库理解、Agent任务编排等），重要信息遗漏。"
+  },
+  {
+    "question": "Prompt Engineering 有什么最佳实践？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "百炼平台模型选型",
+      "API 速率限制"
+    ],
+    "answer": "根据现有资料，我没有找到相关信息。",
+    "context_precision": 1,
+    "context_precision_reason": "两段文档均讨论百炼平台的模型选型和API速率限制，完全未涉及Prompt Engineering的最佳实践，与用户问题无关。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答明确声明‘根据现有资料，我没有找到相关信息’，与参考资料内容完全一致——参考资料仅涉及百炼平台的模型选型和API速率限制，未提及Prompt Engineering最佳实践，因此该回答未编造任何信息。",
+    "answer_relevance": 1,
+    "answer_relevance_reason": "回答未提供任何关于Prompt Engineering最佳实践的信息，仅声明‘没有找到相关信息’，完全未回应问题核心，属于无效回答。"
+  },
+  {
+    "question": "qwen-vl 支持什么功能？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "百炼平台模型选型",
+      "API 速率限制"
+    ],
+    "answer": "qwen-vl 支持图像理解功能，属于多模态模型 [1]。",
+    "context_precision": 4,
+    "context_precision_reason": "文档明确指出qwen-vl是多模态模型，支持图像理解，直接回答了其核心功能；虽未列举更多细节（如图文生成、OCR等），但已覆盖问题最关键的‘支持什么功能’要点，且其他文档（API速率限制）无关，故大部分相关但非全部。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答准确复述了参考资料中关于qwen-vl的关键信息：'多模态，支持图像理解'，未添加任何参考资料未提及的功能（如图像生成、文本生成、OCR等），也未错误归类或夸大能力。引用标记[1]与参考资料来源一致，无编造内容。",
+    "answer_relevance": 2,
+    "answer_relevance_reason": "仅提及‘图像理解’和‘多模态模型’两个笼统概念，未列举具体功能（如图文问答、视觉定位、OCR、图像描述、跨模态检索等），缺乏实质细节，属于泛泛而谈。"
+  },
+  {
+    "question": "Python 的装饰器怎么写？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "Prompt Engineering 最佳实践",
+      "OpenAI 兼容格式调用"
+    ],
+    "answer": "根据现有资料，我没有找到相关信息。",
+    "context_precision": 1,
+    "context_precision_reason": "两篇文档分别讨论Prompt Engineering最佳实践和OpenAI兼容接口调用，均未提及Python装饰器的语法、定义、使用方法或示例，与用户问题完全无关。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答明确指出参考资料中未提供Python装饰器相关信息，与所给资料内容完全一致，未添加任何编造信息。",
+    "answer_relevance": 1,
+    "answer_relevance_reason": "回答完全未提供任何关于Python装饰器的定义、语法、示例或实现方法，仅以‘未找到相关信息’推诿，彻底回避问题核心。"
+  },
+  {
+    "question": "GPT-4 和 qwen-max 哪个更好？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "API 速率限制",
+      "百炼平台模型选型"
+    ],
+    "answer": "根据现有资料，我没有找到关于 GPT-4 的相关信息，因此无法对 GPT-4 和 qwen-max 进行直接比较。参考资料仅说明 qwen-max 是百炼平台提供的能力最强的模型，适合复杂推理和代码生成任务 [2]，但未提及 GPT-4 的性能、特性或对比数据。",
+    "context_precision": 3,
+    "context_precision_reason": "文档提到了qwen-max的能力定位（'能力最强，适合复杂推理和代码生成'），但未提供GPT-4的任何信息，也未对两者进行直接或间接比较，缺乏回答‘哪个更好’所需的对比维度（如性能、场景、基准测试等）。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答严格依据参考资料：明确指出资料中未包含GPT-4信息，因此无法比较；准确转述了qwen-max的定位（‘能力最强，适合复杂推理和代码生成’）并标注来源；未添加任何参考资料未提及的事实、性能指标、主观评价或外部知识。",
+    "answer_relevance": 1,
+    "answer_relevance_reason": "回答完全回避了问题核心——比较GPT-4和qwen-max的优劣，却声称‘没有找到关于GPT-4的相关信息’，这明显错误（GPT-4是公开发布的知名模型，大量权威信息可得）；未提供任何实质性对比维度（如基准测试、能力差异、适用场景等），也未承认自身知识局限或给出合理替代方案，属于虚假否认+零实质回答。"
+  },
+  {
+    "question": "Docker 怎么部署？",
+    "retrieved_count": 2,
+    "retrieved_titles": [
+      "OpenAI 兼容格式调用",
+      "qwen-plus 计费标准"
+    ],
+    "answer": "根据现有资料，我没有找到相关信息。",
+    "context_precision": 1,
+    "context_precision_reason": "两篇文档分别关于OpenAI兼容API调用和Qwen-plus计费标准，均未提及Docker部署的任何内容，与用户问题完全无关。",
+    "faithfulness": 5,
+    "faithfulness_reason": "回答明确指出参考资料中未提供Docker部署相关信息，且未添加任何推测、解释或外部知识，完全忠实于参考资料内容。",
+    "answer_relevance": 1,
+    "answer_relevance_reason": "回答未提供任何关于Docker部署的实质性信息，仅声明‘没有找到相关信息’，完全未回应用户的核心诉求。"
+  }
+]
