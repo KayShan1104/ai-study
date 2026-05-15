@@ -95,3 +95,30 @@ if sys.platform == "win32":
 | 历史管理 | 自己维护 list | `HumanMessage`/`AIMessage` + placeholder |
 
 LangChain 的价值在于把常用模式标准化了，减少了"拼接字符串 → 调 API → 解析 JSON"的样板代码。
+
+### LangChain 是"模板语言"——不是底层 API 规则
+
+Step 1 跑完后产生了一个重要认知：**LangChain 的所有语法约定都是它自己定义的一层模板语言，不是底层 API 的规则。**
+
+- `"placeholder"` 是 `ChatPromptTemplate` 独有的，OpenAI/Dashscope 的 API 里没有这个概念——底层 API 只认一个消息列表，直接传进去就行
+- `"human"` / `"ai"` 是 LangChain 起的别名，内部会自动转成 `"user"` / `"assistant"` 再发给 API
+- `"placeholder"` 和普通 `"human"` 的关键区别：placeholder 接收**消息列表**（`List[BaseMessage]`），会原样展开插入多条消息；`"human"` 只接收字符串，只创建一条 HumanMessage
+
+**本质**：LangChain 在底层 API 之上包了一层模板语言，学 LangChain 就是学这套规则。理解这一点有助于避免把 LangChain 的约定误认为是 LLM API 本身的机制。
+
+#### RunnableLambda：在 chain 中间插入自定义逻辑
+
+用 `RunnableLambda` 把普通函数包装成 `Runnable`，就能串入 chain：
+
+```python
+from langchain_core.runnables import RunnableLambda
+
+upper_chain = (
+    RunnableLambda(lambda x: {"question": x["question"].upper()})
+    | prompt
+    | llm
+    | StrOutputParser()
+)
+```
+
+数据流：输入 → 转大写 → prompt 渲染 → LLM → 解析输出。这是扩展 chain 行为的标准方式，比如可以在中间加缓存、日志、输入校验等。
