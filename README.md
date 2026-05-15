@@ -9,7 +9,7 @@
 | Phase 1 | LLM API 实操 | 已完成 |
 | Phase 2 | Prompt Engineering | 已完成 |
 | Phase 3 | RAG（检索增强生成） | 已完成 |
-| Phase 4 | Agent 框架 | 待开始 |
+| Phase 4 | Agent 框架 | 进行中 |
 | Phase 5 | 探索方向 | 待开始 |
 | Phase 6 | Agent 测试与评估 | 待开始 |
 
@@ -53,6 +53,8 @@
 │       ├── phase3_step6_advanced.py
 │       ├── phase3_acceptance.py
 │       └── acceptance_results.json
+├── phase4/
+│   └── phase4_step1_langchain_basics.py
 ├── obsidian/                      # 学习笔记
 │   ├── Phase1 学习笔记.md
 │   ├── Phase2 学习笔记.md
