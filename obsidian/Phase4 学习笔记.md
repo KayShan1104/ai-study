@@ -180,6 +180,54 @@ result = agent.invoke({"messages": [("user", "北京天气怎么样？")]})
 
 Agent 先思考需要哪些工具 → 同时调用 → 拿到结果后综合回复。
 
+### LangGraph 执行流程图
+
+通过 `agent.get_graph().draw_ascii()` 可以查看 Agent 的执行图结构。
+
+**Step 2 — `create_agent` 自动生成的 ReAct Agent**：
+
+```
+           __start__
+               │
+               ▼
+            ┌──────┐
+            │model │  ← LLM 调用节点
+            └──────┘
+            ╱      ╲
+          ╱          ╲
+    ┌──────┐     +-------+
+    │__end__│     │ tools │  ← 工具执行
+    └──────┘     +-------+
+                    │
+                    └────→ 回到 model (隐式循环)
+```
+
+流程：`__start__ → model → (需要工具? → tools → model) → __end__`
+
+**Step 3 — 手写 `StateGraph` 有状态 Agent**：
+
+```
+           __start__
+               │
+               ▼
+            ┌──────┐
+            │ llm  │  ← 自定义 LLM 节点（注入用户偏好）
+            └──────┘
+            ╱      ╲
+          ╱          ╲
+    ┌──────┐     +-------+
+    │__end__│     │ tools │  ← 工具执行
+    └──────┘     +-------+
+                    │
+                    └────→ 回到 llm
+```
+
+流程：`START → llm → should_continue 判断 → (tools → llm) / END`
+
+两个图结构一样，区别在于：
+- `create_agent`：边和路由都是框架内置的，黑盒开箱即用
+- `StateGraph`：手动定义每个节点和边，完全可控（如注入用户偏好、条件路由等）
+
 ### LangGraph vs 手写 Agent 对比
 
 | 维度 | 手写 Agent Loop | LangGraph Agent |
