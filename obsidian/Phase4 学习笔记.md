@@ -417,3 +417,39 @@ review_llm = ChatAnthropic(model="claude-sonnet-4-6")  # Anthropic
 | 避免单点故障 | 不同 Agent 用不同供应商 | 一家 API 挂了另一家还能跑 |
 
 实际生产中很常见——比如 Supervisor 用 GPT-4o 做路由，Writer 用 Claude 写代码，Summarizer 用小模型做格式化。总成本可能只有全部用 GPT-4o 的一半。
+
+### 多 Agent 微服务架构
+
+生产环境中，多 Agent 通常部署为**独立微服务**，每个 Agent 是一个独立的 HTTP 服务，Supervisor 通过 API 远程调用：
+
+```
+Supervisor (API 服务)
+    │
+    ├── POST /agent/writer ──────►  Writer 微服务 (Python, qwen-plus)
+    ├── POST /agent/reviewer ────►  Reviewer 微服务 (Go, Claude)
+    └── POST /agent/summarizer ──►  Summarizer 微服务 (Node.js, qwen-turbo)
+```
+
+**与单机进程内的对比**：
+
+| 维度 | 单机进程内（学习阶段） | 微服务架构（生产环境） |
+|------|----------------------|---------------------|
+| 通信方式 | 函数调用，无网络延迟 | HTTP/gRPC 远程调用，增加 RTT |
+| 部署 | 一个进程，部署简单 | 每个 Agent 独立部署 |
+| 扩缩容 | 所有 Agent 共享资源 | 可按需独立扩缩容 |
+| 技术栈 | 同一语言/框架 | 每个 Agent 可用不同语言 |
+| 故障隔离 | 进程级隔离 | 服务级隔离，更彻底 |
+| 调试 | 本地断点即可 | 需要分布式 tracing |
+
+**在 LangGraph 中实现**：图结构不变，只需将节点函数从本地调用改为 HTTP 调用：
+
+```python
+def writer_agent_remote(state: dict) -> dict:
+    import requests
+    resp = requests.post("http://writer-svc:8080/generate", json={"task": state["current_task"]})
+    return {"writer_output": resp.json()["content"]}
+```
+
+**主流框架都支持这种模式**：LangGraph 节点函数可以是任意代码（本地/远程），CrewAI 支持 Agent 通过 API 注册为远程服务，AutoGen 原生支持多进程/远程 Agent 通信。
+
+**学习路径建议**：先在单机进程内理解概念（当前做法），再迁移到微服务架构。核心区别只是"节点函数是直接调用还是 HTTP 远程调用"，LangGraph 的图结构完全不变。
