@@ -453,3 +453,66 @@ def writer_agent_remote(state: dict) -> dict:
 **主流框架都支持这种模式**：LangGraph 节点函数可以是任意代码（本地/远程），CrewAI 支持 Agent 通过 API 注册为远程服务，AutoGen 原生支持多进程/远程 Agent 通信。
 
 **学习路径建议**：先在单机进程内理解概念（当前做法），再迁移到微服务架构。核心区别只是"节点函数是直接调用还是 HTTP 远程调用"，LangGraph 的图结构完全不变。
+
+---
+
+## Step 5: 手写 Agent vs 框架 Agent 对比
+
+### 手写 ReAct Agent 核心逻辑
+
+不依赖任何框架，纯 `openai` SDK + for 循环：
+
+```python
+messages = [system_msg, user_msg]
+for step in range(max_steps):
+    response = client.chat.completions.create(messages=messages, tools=TOOLS)
+    if response.choices[0].message.tool_calls:
+        # 执行工具 → 构造 tool message → 追加到 messages
+        for tc in tool_calls:
+            result = execute_tool(tc.function.name, json.loads(tc.function.arguments))
+            messages.append({"role": "tool", "tool_call_id": tc.id, "content": result})
+    else:
+        return response.choices[0].message.content  # LLM 直接回复，结束
+```
+
+### 手写 Agent 实验结果
+
+| 测试用例 | 迭代次数 | 耗时 | 行为 |
+|---------|---------|------|------|
+| 北京天气 | 2 | 6.5s | 调 get_weather → 回复 |
+| 123 * 456 | 2 | 2.3s | 调 calculate → 回复 |
+| 上海+深圳天气+平均温度 | 3 | 5.8s | 并行调 2 个 get_weather → 调 calculate → 回复 |
+| 什么是 RAG | 1 | 8.1s | 不需要工具，直接回复 |
+
+手写 Agent 能正确完成 3+ 工具的调度，包括并行工具调用。
+
+### 手写 vs LangGraph 架构对比
+
+手写 Agent 做的工作：
+1. 手动构造 `messages` 列表（`{"role": "system/user/tool", ...}`）
+2. 手动调用 OpenAI API（`client.chat.completions.create`）
+3. 手动解析 `tool_calls`
+4. 手动执行工具并构造 `tool message`
+5. 手动控制循环和退出条件
+
+LangGraph 做的工作：
+1. 自动生成 tool schema（从 `@tool` 装饰器）
+2. 自动调用 LLM（通过 `ChatModel` 抽象）
+3. 自动解析 `tool_calls` 和执行工具
+4. 自动构造 `ToolMessage` 对象
+5. 通过状态图自动控制循环和退出
+
+### 框架哪些封装是真正有价值的？
+
+**高价值**：
+1. **Tool Schema 自动生成** — 从函数签名和 docstring 自动生成 JSON schema，手写需要大量样板代码
+2. **状态图可视化** — `get_graph().draw_ascii()` 自动生成执行流程图，调试时非常有用
+3. **持久化 Checkpointer** — 一行代码配置，手写需要自己实现序列化/反序列化
+4. **多 Agent 编排** — `add_conditional_edges` 一行搞定路由逻辑，手写需要自己写状态机
+
+**可能是过度设计**：
+1. **LCEL（`|` 操作符链式调用）** — 可读性下降，debug 时难以定位哪一段出问题
+2. **RunnableParallel / RunnableLambda** — 增加理解成本，大多数场景用不到这么复杂的组合
+3. **BaseChatModel 继承体系** — 为了统一不同 LLM 引入大量抽象类，直接调 API 更直观
+
+**总结**：框架的核心价值在于**工具管理 + 状态管理 + 多 Agent 编排**；过度设计主要在于链式语法和过度抽象的 Runnable 体系。

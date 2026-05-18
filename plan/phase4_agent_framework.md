@@ -189,9 +189,9 @@ def react_agent(question, tools, max_steps=5):
 ```
 
 **Milestone 5**：
-- [ ] 手写 ReAct Agent 能正确完成 3+ 个工具的调度
-- [ ] 画出手写 Agent 和 LangGraph Agent 的架构对比图
-- [ ] 能解释框架的哪些封装是真正有价值的，哪些是过度设计
+- [x] 手写 ReAct Agent 能正确完成 3+ 个工具的调度
+- [x] 画出手写 Agent 和 LangGraph Agent 的架构对比图
+- [x] 能解释框架的哪些封装是真正有价值的，哪些是过度设计
 
 ---
 
