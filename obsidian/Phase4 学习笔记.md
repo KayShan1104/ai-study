@@ -390,3 +390,30 @@ graph.add_edge("Summarizer", "Supervisor")
 3. **调试难**：Agent 间交互可能导致意外行为（互相误导、循环）
 4. **过度设计**：简单任务用单 Agent 即可，多 Agent 反而增加复杂度
 5. **Agent 之间可能互相误导**：Writer 输出错误代码，Reviewer 没看出来，Summarizer 基于错误信息汇总
+
+### 多 Agent 可以调用不同的 LLM
+
+每个 Agent 节点本质上就是一个 Python 函数，在函数内部调用哪个 LLM 实例完全由代码决定。给不同 Agent 注入不同的 LLM 实例即可：
+
+```python
+# 不同 Agent 使用不同模型
+write_llm = ChatOpenAI(model="qwen-plus", ...)       # 普通任务
+review_llm = ChatOpenAI(model="qwen-max", ...)       # 关键审查用最贵模型
+summarize_llm = ChatOpenAI(model="qwen-turbo", ...)  # 简单整理用便宜模型
+
+# 甚至可以混用不同厂商
+writer_llm = ChatOpenAI(model="gpt-4o")              # OpenAI
+review_llm = ChatAnthropic(model="claude-sonnet-4-6")  # Anthropic
+```
+
+**适用场景**：
+
+| 场景 | 策略 | 原因 |
+|------|------|------|
+| 代码审查 | 用最强模型 | 安全性/正确性不能妥协 |
+| 文本摘要 | 用便宜模型 | 任务简单，没必要花大钱 |
+| 数据提取 | 用结构化输出强的模型 | 不同模型在 JSON 输出上能力差异大 |
+| 降低成本 | 关键步骤贵模型，非关键便宜 | 3-4 次调用全用最贵成本太高 |
+| 避免单点故障 | 不同 Agent 用不同供应商 | 一家 API 挂了另一家还能跑 |
+
+实际生产中很常见——比如 Supervisor 用 GPT-4o 做路由，Writer 用 Claude 写代码，Summarizer 用小模型做格式化。总成本可能只有全部用 GPT-4o 的一半。
