@@ -87,10 +87,10 @@ print(result)
    - 调试难度差异
 
 **Milestone 2**：
-- [ ] 用 LangGraph 实现包含 3+ 个工具的 Agent
-- [ ] Agent 能正确选择和路由工具
-- [ ] 能画出 LangGraph 的执行流程图
-- [ ] 列出 3 个 LangGraph 比你手写更方便的地方
+- [x] 用 LangGraph 实现包含 3+ 个工具的 Agent
+- [x] Agent 能正确选择和路由工具
+- [x] 能画出 LangGraph 的执行流程图
+- [x] 列出 3 个 LangGraph 比你手写更方便的地方
 
 ---
 
@@ -112,9 +112,9 @@ print(result)
    - 向量存储记忆（从向量库检索相关历史）
 
 **Milestone 3**：
-- [ ] Agent 能在第 5 轮对话中记住第 1 轮的用户偏好
-- [ ] 能解释 State、Node、Edge 三个概念
-- [ ] 对比 3 种记忆方式的适用场景
+- [x] Agent 能在第 5 轮对话中记住第 1 轮的用户偏好
+- [x] 能解释 State、Node、Edge 三个概念
+- [x] 对比 3 种记忆方式的适用场景
 
 ---
 
