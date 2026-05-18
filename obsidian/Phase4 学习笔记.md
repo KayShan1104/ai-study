@@ -122,3 +122,79 @@ upper_chain = (
 ```
 
 数据流：输入 → 转大写 → prompt 渲染 → LLM → 解析输出。这是扩展 chain 行为的标准方式，比如可以在中间加缓存、日志、输入校验等。
+
+---
+
+## Step 2: LangChain 的 Tool 与 Agent
+
+### Tool 定义方式
+
+用 `@tool` 装饰器定义工具，框架会自动从函数签名和 docstring 生成 schema：
+
+```python
+from langchain_core.tools import tool
+
+@tool
+def get_weather(city: str) -> str:
+    """获取指定城市的天气信息。参数 city 为城市名称。"""
+    return "晴天，25°C"
+```
+
+Agent 能看到的工具信息：
+- **函数名**：`get_weather`
+- **参数 schema**：从 `city: str` 推断
+- **描述**：从 docstring 提取
+
+不需要手写 JSON schema 或手动描述参数，这是相比手写 Agent 的第一个方便之处。
+
+### ReAct Agent
+
+ReAct（Reasoning + Acting）是一种 Agent 模式，核心循环：
+**Thought → Action → Observation → Thought → ... → Final Answer**
+
+LangGraph 提供 `create_agent`（原 `create_react_agent`）一键创建：
+
+```python
+from langchain.agents import create_agent  # 注意：新版从 langchain.agents 导入
+
+tools = [get_weather, calculate, search_knowledge]
+agent = create_agent(llm, tools)
+result = agent.invoke({"messages": [("user", "北京天气怎么样？")]})
+```
+
+### 实验观察
+
+**多工具组合能力**：
+- 输入 "上海和深圳的天气哪个更好？我想算一下 (25 + 26) / 2 的平均温度"
+- Agent **自动并行调用**了 `get_weather`（两次，上海和深圳）和 `calculate`
+- 最终回复综合了三个工具的结果
+
+**执行过程可视化**（Demo 2 输出）：
+```
+[User] 杭州天气如何？然后算一下 30 + 25 是多少
+[AI → Tool] 调用: ['get_weather', 'calculate']
+[Tool Result] 晴天，30°C，湿度 55%，西南风 1 级
+[Tool Result] 30 + 25 = 55
+[AI] 杭州当前天气为晴天...而 30 + 25 的计算结果是 55。
+```
+
+Agent 先思考需要哪些工具 → 同时调用 → 拿到结果后综合回复。
+
+### LangGraph vs 手写 Agent 对比
+
+| 维度 | 手写 Agent Loop | LangGraph Agent |
+|------|-----------------|-----------------|
+| 工具描述 | 手动构造 JSON schema + 描述文字 | `@tool` 自动生成 |
+| ReAct 循环 | 手写 for 循环 + 判断 | `create_agent` 内置 |
+| 工具调用解析 | 自己解析 LLM 返回的 JSON | 框架自动解析和执行 |
+| 消息格式 | 手动构造 `{"role": "tool", ...}` | `ToolMessage` 对象 |
+| 代码量 | ~100-150 行 | ~10 行（不含工具定义）|
+
+**LangGraph 真正有价值的 3 个点**：
+1. **Tool schema 自动生成**——函数签名和 docstring 直接转为 LLM 能理解的格式，不需要手写描述
+2. **ReAct loop 内置**——"调用→执行→回传"的循环逻辑不需要自己写，避免边界情况 bug
+3. **消息格式统一**——不需要自己维护 `role: "tool"`, `tool_call_id` 等字段
+
+### 遇到的问题
+
+**LangGraph API 迁移**：`create_react_agent` 已从 `langgraph.prebuilt` 迁移到 `langchain.agents.create_agent`，旧 API 会报 `LangGraphDeprecatedSinceV10` 警告。代码已更新使用新 API。

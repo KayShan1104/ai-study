@@ -52,9 +52,9 @@ print(result)
 ```
 
 **Milestone 1**：
-- [ ] 用 LangChain 的 chain 完成一次对话
-- [ ] 理解 `|` 操作符的作用（类似 Unix pipe 的链式调用）
-- [ ] 能用 LangChain 管理对话历史
+- [x] 用 LangChain 的 chain 完成一次对话
+- [x] 理解 `|` 操作符的作用（类似 Unix pipe 的链式调用）
+- [x] 能用 LangChain 管理对话历史
 
 ---
 
