@@ -144,10 +144,10 @@ Supervisor:
 ```
 
 **Milestone 4**：
-- [ ] 实现至少 2 种多 Agent 模式（推荐 Supervisor + Sequential）
-- [ ] 对比单 Agent 和多 Agent 在同一个任务上的表现
-- [ ] 能说出多 Agent 相比单 Agent 的真正优势（不仅仅是"先后调用"）
-- [ ] 能说出多 Agent 的缺点（成本、延迟、复杂度、Agent 之间可能互相误导）
+- [x] 实现至少 2 种多 Agent 模式（推荐 Supervisor + Sequential）
+- [x] 对比单 Agent 和多 Agent 在同一个任务上的表现
+- [x] 能说出多 Agent 相比单 Agent 的真正优势（不仅仅是"先后调用"）
+- [x] 能说出多 Agent 的缺点（成本、延迟、复杂度、Agent 之间可能互相误导）
 
 ---
 

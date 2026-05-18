@@ -327,3 +327,66 @@ graph.invoke({"messages": [...]}, config={"configurable": {"thread_id": "abc123"
 ### 遇到的问题
 
 **LangGraph 状态传递 bug**：最初实现时，每轮对话 Agent 都返回同样的回复。原因是把完整消息历史 + 新消息一起 `invoke`，导致 LLM 每次都看到完全一样的上下文（包含之前的 AI 回复），无法区分"已处理"和"新消息"。修复方案是让 `call_llm` 节点检查最后一条消息是否已经是完成的 AI 回复，如果是则跳过处理。
+
+---
+
+## Step 4: 多 Agent 协作
+
+### 多 Agent 模式
+
+#### Sequential 链式模式
+
+固定的线性流程，A 的输出作为 B 的输入，B 的输出作为 C 的输入：
+
+```python
+graph.add_edge(START, "Writer")
+graph.add_edge("Writer", "Reviewer")
+graph.add_edge("Reviewer", "Summarizer")
+graph.add_edge("Summarizer", END)
+```
+
+适合：流程固定的任务，不需要动态路由。
+
+#### Supervisor 主管模式
+
+一个 Supervisor 节点根据当前状态决定下一步跳转到哪个子 Agent：
+
+```python
+graph.add_edge(START, "Supervisor")
+graph.add_conditional_edges("Supervisor", route_supervisor, {...})
+# 子 Agent 执行完后都回到 Supervisor
+graph.add_edge("Writer", "Supervisor")
+graph.add_edge("Reviewer", "Supervisor")
+graph.add_edge("Summarizer", "Supervisor")
+```
+
+关键设计点：
+- **路由函数**：根据 state 中的字段（如 `writer_output` 是否存在）判断下一步
+- **安全限制**：必须加最大步数计数器，防止 Supervisor 陷入无限循环
+- **状态更新**：节点函数只返回需要更新的字段（如 `{"writer_output": "..."}`），不是完整 state
+
+### 多 Agent vs 单 Agent
+
+| 维度 | 单 Agent | 多 Agent (Supervisor) |
+|------|---------|---------------------|
+| LLM 调用次数 | 1 次 | 3-4 次 |
+| 响应延迟 | 低（~5s） | 高（~15-20s） |
+| Token 成本 | 低 | 高（3-4 倍） |
+| 专业化程度 | 通用，可能都不精 | 每个 Agent 专精一项 |
+| 审查独立性 | 自己写自己审，可能忽略 bug | 独立 Agent 审查，更客观 |
+| 可维护性 | 改 prompt 影响全局 | 每个 Agent 独立修改 |
+
+### 多 Agent 的真正优势
+
+1. **关注点分离**：每个 Agent 有独立 system prompt，专注一个领域
+2. **独立审查**：不同 prompt 角度的审查比"自己审自己"更容易发现问题
+3. **可组合性**：可以动态插入新 Agent（如 TestAgent），或给 Writer 分配多个 Reviewer
+4. **失败隔离**：Writer 失败不影响 Reviewer，可单独重试
+
+### 多 Agent 的缺点
+
+1. **成本高**：3-4 倍 LLM 调用
+2. **延迟大**：串行执行多个 Agent
+3. **调试难**：Agent 间交互可能导致意外行为（互相误导、循环）
+4. **过度设计**：简单任务用单 Agent 即可，多 Agent 反而增加复杂度
+5. **Agent 之间可能互相误导**：Writer 输出错误代码，Reviewer 没看出来，Summarizer 基于错误信息汇总
