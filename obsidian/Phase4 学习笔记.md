@@ -516,3 +516,40 @@ LangGraph 做的工作：
 3. **BaseChatModel 继承体系** — 为了统一不同 LLM 引入大量抽象类，直接调 API 更直观
 
 **总结**：框架的核心价值在于**工具管理 + 状态管理 + 多 Agent 编排**；过度设计主要在于链式语法和过度抽象的 Runnable 体系。
+
+---
+
+## Step 6: Agent 的错误处理与健壮性
+
+### 5 种异常场景 + 处理策略
+
+| 异常场景 | 处理策略 |
+|---------|---------|
+| 工具调用失败（网络超时/内部错误） | 指数退避重试（2次）→ 返回错误信息 |
+| LLM 返回不存在的工具名 | 捕获 ValueError，返回可用工具列表给 LLM |
+| LLM 返回非法 JSON 参数 | 捕获 JSONDecodeError，把错误信息返回给 LLM |
+| LLM 缺少必要参数 | 工具内部校验参数，返回错误提示 |
+| Agent 陷入循环（反复调用同一工具） | LoopDetector 检测重复调用，达到阈值后强制退出 |
+| LLM API 调用失败 | 捕获异常，重试 N 次后返回降级回复 |
+
+### LoopDetector 循环检测
+
+```python
+class LoopDetector:
+    def __init__(self, max_same_action=3):
+        self.action_history = []  # (tool_name, args_json)
+
+    def record(self, tool_name, arguments):
+        key = (tool_name, json.dumps(arguments, sort_keys=True))
+        self.action_history.append(key)
+
+    def is_looping(self):
+        recent = self.action_history[-self.max_same_action:]
+        return all(a == recent[-1] for a in recent)
+```
+
+记录每次工具调用，当最近 N 次完全相同时判定为循环，强制退出。
+
+### 核心原则
+
+**Agent 永远不会 crash**，最多返回一条有用的错误信息给用户。所有异常都有 try/except 包裹，不会让 Python 的 traceback 暴露给终端用户。

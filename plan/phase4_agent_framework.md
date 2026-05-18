@@ -212,9 +212,9 @@ def react_agent(question, tools, max_steps=5):
 3. 了解 LangGraph 的 built-in 错误处理机制
 
 **Milestone 6**：
-- [ ] 对 5 种异常场景都有处理策略
-- [ ] Agent 在异常时不会 crash，而是给用户有用的提示
-- [ ] 有异常处理日志记录
+- [x] 对 5 种异常场景都有处理策略
+- [x] Agent 在异常时不会 crash，而是给用户有用的提示
+- [x] 有异常处理日志记录
 
 ---
 
