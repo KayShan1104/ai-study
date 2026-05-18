@@ -285,6 +285,45 @@ graph = graph_builder.compile()
 
 **向量检索记忆原理**：将历史对话分段存入向量数据库（Chroma），用户新提问时检索最相关片段作为 context 注入 prompt，而非传入完整历史。适合长对话/知识库场景。
 
+### LangGraph 状态图的存储形式
+
+StateGraph 的图结构本身**存在于内存中的 Python 对象**，不是文件：
+
+1. **图结构（编译前）**：`StateGraph` 是内存中的图构建器，通过 `add_node()`、`add_edge()` 注册节点和边，`compile()` 后返回 `CompiledGraph` 对象。全程不写文件。
+2. **运行状态（invoke 时）**：state 是内存中的 dict，调用完即丢失。
+
+**图结构本身不需要持久化**——它是代码定义的（哪些节点、哪些边、条件路由逻辑），每次程序启动时通过代码重建。这和定义函数一样，源码存在，运行时自然能重建。
+
+**需要持久化的是运行时的状态数据**：对话历史、用户偏好、中间变量等。Checkpointer 存到数据库的不是"图"，而是**这张图在某个 `thread_id` 下运行到的状态快照**，大致结构：
+
+```
+checkpoint 表:
+  thread_id="abc123"  node="llm"   state={messages: [...], user_preferences: {...}}
+  thread_id="abc123"  node="tools" state={messages: [...]}
+```
+
+重启后的恢复流程：代码重建图结构 → checkpointer 按 `thread_id` 从数据库加载最新状态快照 → 从中断处继续执行。
+
+**如需持久化**（中断恢复、时间旅行），需配置 **checkpointer**：
+
+| Checkpointer | 存储位置 | 用途 |
+|-------------|---------|------|
+| `MemorySaver` | 内存 dict | 进程内持久，重启丢失 |
+| `SqliteSaver` | 本地 SQLite 文件 | 跨重启持久化 |
+| `PostgresSaver` | PostgreSQL 数据库 | 生产级持久化 |
+
+```python
+from langgraph.checkpoint.memory import MemorySaver
+
+checkpointer = MemorySaver()
+graph = builder.compile(checkpointer=checkpointer)
+graph.invoke({"messages": [...]}, config={"configurable": {"thread_id": "abc123"}})
+```
+
+`thread_id` 用于区分不同的对话线程，checkpointer 会按 thread_id 保存状态快照。
+
+> **注意**：LangGraph checkpointer 存的是**对话状态快照**，Phase 3 学的 Chroma 向量库存的是**知识数据**——两者是不同层面的东西。
+
 ### 遇到的问题
 
 **LangGraph 状态传递 bug**：最初实现时，每轮对话 Agent 都返回同样的回复。原因是把完整消息历史 + 新消息一起 `invoke`，导致 LLM 每次都看到完全一样的上下文（包含之前的 AI 回复），无法区分"已处理"和"新消息"。修复方案是让 `call_llm` 节点检查最后一条消息是否已经是完成的 AI 回复，如果是则跳过处理。
