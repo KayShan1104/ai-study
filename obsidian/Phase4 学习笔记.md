@@ -553,3 +553,59 @@ class LoopDetector:
 ### 核心原则
 
 **Agent 永远不会 crash**，最多返回一条有用的错误信息给用户。所有异常都有 try/except 包裹，不会让 Python 的 traceback 暴露给终端用户。
+
+---
+
+## 阶段验收：多工具多步骤代码助手 Agent
+
+### 验收项目
+
+实现一个"审查 → 建议 → 修改"完整流程的代码助手 Agent。
+
+**测试代码**：
+```python
+def calculate(expression):
+    result = eval(expression)  # eval 安全风险
+    return result
+
+def read_file(path):
+    try:
+        with open(path) as f:
+            return f.read()
+    except:  # 裸 except
+        return None
+```
+
+### 验收结果
+
+**手写版**（`phase4_acceptance_handwritten.py`）和**框架版**（`phase4_acceptance_framework.py`）均通过。
+
+| 验收标准 | 结果 |
+|---------|------|
+| 完成"审查 → 建议 → 修改"完整流程 | ✅ code_review → suggest_fix → rewrite_code，4 步完成 |
+| 工具选择正确率 >= 80% | ✅ 100%，所有场景都正确选择了 3 个工具 |
+| 有异常处理和日志 | ✅ 空代码校验、JSON 解析失败、API 调用失败、循环检测 |
+| 能解释 Agent 的每一步决策 | ✅ 有执行轨迹 trace 打印 |
+| 代码结构清晰，手写版和框架版都有 | ✅ 两个文件 |
+
+**实际执行轨迹**：
+```
+用户: "请修改这段代码，修复所有问题"
+  Step 1: [code_review] → eval() 安全风险, except 裸捕获
+  Step 2: [suggest_fix] → 替换为 ast.literal_eval, except Exception
+  Step 3: [rewrite_code] → 修改后代码返回
+  Step 4: [Final Answer] → 整理报告回复用户
+```
+
+**框架版执行图**（`get_graph().draw_ascii()`）：
+```
+       __start__
+          │
+       ┌──────┐
+       │ llm  │
+       └──────┘
+       ╱      ╲
+  __end__    tools
+              │
+              └──→ 回到 llm
+```
