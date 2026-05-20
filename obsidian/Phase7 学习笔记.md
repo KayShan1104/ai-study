@@ -277,3 +277,94 @@ BERT 有两个预训练任务：
 如果在推理时忘记切换到 `eval()`，Dropout 会随机丢弃神经元，导致**同一输入每次输出不同**——这在生产环境中是不可接受的。所以推理时必须用 `model.eval()` + `torch.no_grad()`（同时禁用梯度计算节省内存）。
 
 ---
+
+## Step 4: Qwen LoRA 微调 + Zero-Shot 基线对比
+
+### 本地运行结果：Zero-Shot Baseline
+
+代码文件：`code/phase7/phase7_step4_zeroshot_baseline.py`
+Colab Notebook：`code/phase7/phase7_step4_qwen_lora_colab.ipynb`
+
+**Zero-Shot (qwen-plus) 评估结果**：
+- 测试集准确率：**85.58%**（104 条中 89 条正确）
+- F1 (weighted)：**0.8437**
+- 比 BERT 微调低了 ~10 个百分点
+
+**各类别表现**：
+
+| 类别 | Precision | Recall | F1 | 分析 |
+|------|-----------|--------|-----|------|
+| shipping_delay | 1.0000 | **0.6000** | 0.7500 | Recall 很低，延误相关表述被误判为 tracking_issue |
+| customs_clearance | 0.9231 | 1.0000 | 0.9600 | 好 |
+| tracking_issue | 0.8000 | 0.8571 | 0.8276 | 尚可 |
+| billing_dispute | 0.7647 | **1.0000** | 0.8667 | Precision 偏低，其他类别被误判为 billing |
+| schedule_inquiry | 1.0000 | 0.9231 | 0.9600 | 好 |
+| cargo_damage | 0.8889 | 1.0000 | 0.9412 | 好 |
+| booking_request | 0.7059 | 1.0000 | 0.8276 | Precision 偏低，general 被误判 |
+| general | 1.0000 | **0.4286** | 0.6000 | Recall 极低，大部分 general 被误判为其他类别 |
+
+**关键发现**：
+
+1. **Zero-shot 不如 fine-tuned**：qwen-plus（~100B 参数）zero-shot 准确率 85.58%，而 BERT-base-chinese（102M 参数）fine-tuned 达到 96.15%。说明对于**特定领域的分类任务**，少量标注数据 + 微调比大模型 zero-shot 更有效。
+
+2. **general 类别是最大短板**：Zero-shot 下 general 的 recall 只有 42.86%，意味着大部分通用问题都被误判为其他具体类别。这是因为 LLM 倾向于"过度解读"用户意图——即使是一般性询问，它也会尝试找到一个具体的类别。
+
+3. **shipping_delay recall 低**：60% 的延误消息被误判为 tracking_issue。这合理，因为"物流没更新"既是延误的表现，也是追踪问题，边界模糊。
+
+### 三模型对比
+
+| 模型 | 参数量 | 可训练参数 | 训练方式 | Accuracy | F1 (weighted) |
+|------|--------|-----------|----------|----------|---------------|
+| Zero-Shot (qwen-plus) | ~100B | 0 | Prompt only | **0.8558** | **0.8437** |
+| BERT-base-chinese | 102M | 102M | Full fine-tuning | **0.9615** | **0.9616** |
+| Qwen-LoRA (Colab) | 1.5B | ~8M (0.5%) | LoRA | pending | pending |
+
+**面试观点**：
+- Zero-shot 适合**快速原型验证**，不需要训练成本，但精度有限
+- Fine-tuning 在**特定领域任务**上远超 zero-shot（+10% 准确率）
+- LoRA 的目标：在接近 BERT 微调的精度下，只训练 0.5% 的参数（省显存、防灾难性遗忘）
+
+---
+
+### Q&A：LoRA 与微调
+
+#### Q1: 什么是 LoRA？为什么只训练 q_proj 和 v_proj？
+
+**A**: LoRA（Low-Rank Adaptation）的核心思想是：**模型的微调不需要更新全部参数，只需要在关键层添加低秩矩阵即可。**
+
+Transformer 的 self-attention 中，Q/K/V 矩阵负责把输入投影到不同的子空间。研究发现，微调时主要需要调整的是 **Q（query）和 V（value）** 的投影方向：
+- Q 决定了"模型关注什么"（attention pattern）
+- V 决定了"模型输出什么信息"
+
+K（key）和 O（output）矩阵相对稳定，不需要大幅调整。所以 LoRA 通常只在 `q_proj` 和 `v_proj` 上加低秩适配器。
+
+LoRA 的数学原理：原本 Q = W @ x，LoRA 改为 Q = (W + ΔW) @ x，其中 ΔW = A @ B，A 是 (d_model × r) 矩阵，B 是 (r × d_model) 矩阵。r 就是 LoRA rank（我们设 r=16），远小于 d_model（768 或 1536）。
+
+**效果**：原本需要更新 1.5B 参数，用 LoRA (r=16) 只需要更新约 8M 参数（0.5%）。
+
+#### Q2: LoRA 相比全量微调有什么优势？
+
+**A**: 三个核心优势：
+
+1. **参数高效**：只训练 0.5%-1% 的参数，显存需求大幅降低。1.5B 模型全量微调需要 ~30GB 显存，LoRA 只需 ~8GB（T4 够用）。
+
+2. **避免灾难性遗忘（Catastrophic Forgetting）**：预训练模型的绝大部分参数保持不变，不会丢失通用语言能力。LoRA 只是"叠加"了一个小的适配器。
+
+3. **多任务共享**：同一个 base model 可以加载不同的 LoRA 权重，实现多任务切换。比如一个物流意图 LoRA + 一个客服回复 LoRA，共享同一个 base model。
+
+#### Q3: 为什么 zero-shot qwen-plus 反而不如 fine-tuned BERT？
+
+**A**: 这涉及到**任务匹配度**和**模型知识迁移**的问题：
+
+- qwen-plus 虽然有更强的通用能力，但 zero-shot 下它只能依靠 pre-training 阶段学到的"常识"。物流场景的 8 个业务类别（如 shipping_delay vs tracking_issue）有细微的语义边界，zero-shot 很难精确区分。
+
+- BERT 经过 fine-tuning 后，分类头已经**专门学习**了这 8 个类别的决策边界。训练数据中包含了"什么是延误、什么是追踪问题"的具体示例，模型直接学习了这些模式。
+
+**类比**：qwen-plus 像一个什么都知道的博士生，但没学过你们公司的业务分类；BERT 像一个只学了 520 道例题的本科生，但考的全是例题范围内的题。对于特定考试，后者反而考得更好。
+
+**实践指导**：
+- 任务明确、有标注数据 → fine-tuning 效果更好
+- 任务探索阶段、没有标注数据 → zero-shot 做 baseline
+- 最佳方案：zero-shot 筛掉明显能解决的 case，fine-tuned 模型处理边界 case
+
+---
