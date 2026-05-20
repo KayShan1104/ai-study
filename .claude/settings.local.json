@@ -16,7 +16,8 @@
       "Bash(Select-Object -First 30)",
       "Bash(Select-String -NotMatch \"LangChainPendingDeprecationWarning|JsonPlusSerializer\")",
       "Bash(pip show *)",
-      "Bash(Select-String \"Location|Version|Requires\")"
+      "Bash(Select-String \"Location|Version|Requires\")",
+      "Bash(chcp 65001)"
     ]
   }
 }
