@@ -69,8 +69,10 @@
 │   ├── phase6_step2_dataset.py           # 评估数据集构建：100 用例 + 5 类型
 │   ├── phase6_step3_eval_pipeline.py     # 自动化评估流水线：CI 集成 + 趋势对比
 │   ├── phase6_step4_trace_debug.py       # Agent 行为监控：Trace 系统 + 错误分析
+│   ├── phase6_step5_security_eval.py     # 安全评估：OWASP LLM Top 10 + 30 用例扫描
 │   ├── test_cases.json                   # 测试数据集（100 用例）
 │   ├── eval_results.json                 # Step 1 评估结果
+│   ├── security_report.json              # 安全评估报告
 │   ├── eval_results/                     # 流水线评估报告
 │   │   ├── eval_history.json
 │   │   └── report_*.json

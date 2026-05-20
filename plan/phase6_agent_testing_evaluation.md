@@ -256,10 +256,10 @@ type: project
    - NIST AI Risk Management Framework
 
 **Milestone 5**：
-- [ ] 30+ 个安全测试用例
-- [ ] 自动化安全扫描能跑通
-- [ ] 有安全评估报告，标注通过的和不通过的 case
-- [ ] 了解 OWASP LLM Top 10 的主要内容
+- [x] 30+ 个安全测试用例
+- [x] 自动化安全扫描能跑通
+- [x] 有安全评估报告，标注通过的和不通过的 case
+- [x] 了解 OWASP LLM Top 10 的主要内容
 
 ---
 
