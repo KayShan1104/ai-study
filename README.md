@@ -64,7 +64,9 @@
 │   ├── phase4_acceptance_handwritten.py    # 阶段验收：手写版
 │   └── phase4_acceptance_framework.py      # 阶段验收：框架版
 ├── code/phase6/
-│   └── phase6_step0_cognitive_shift.py   # 认知升级：传统测试 vs Agent 测试
+│   ├── phase6_step0_cognitive_shift.py   # 认知升级：传统测试 vs Agent 测试
+│   ├── phase6_step1_eval_metrics.py      # 评估指标体系设计：LLM-as-judge + 7 维度评分
+│   └── eval_results.json                 # 评估结果
 ├── obsidian/                      # 学习笔记
 │   ├── Phase1 学习笔记.md
 │   ├── Phase2 学习笔记.md
