@@ -17,7 +17,17 @@
       "Bash(Select-String -NotMatch \"LangChainPendingDeprecationWarning|JsonPlusSerializer\")",
       "Bash(pip show *)",
       "Bash(Select-String \"Location|Version|Requires\")",
-      "Bash(chcp 65001)"
+      "Bash(chcp 65001)",
+      "Bash(xelatex --version)",
+      "Bash(pandoc \"单轲_AI方向_15801765637.md\" -o \"单轲_AI方向_15801765637.pdf\" --pdf-engine=xelatex -V mainfont=\"Microsoft YaHei\" -V fontsize=9pt -V geometry:margin=1.5cm -V colorlinks=true)",
+      "Bash(pandoc --list-pdf-engines)",
+      "Bash(Get-Command weasyprint, wkhtmltopdf, prince, context -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object Name, Source)",
+      "Bash(pandoc \"单轲_AI方向_15801765637.md\" -f markdown -t html --wrap=none -o ai_fragment.html)",
+      "Bash(pandoc \"单轲_存储方向_15801765637.md\" -f markdown -t html --wrap=none -o storage_fragment.html)",
+      "Bash(taskkill //F //IM msedge.exe)",
+      "PowerShell(python -m playwright install chromium 2>&1 | Select-Object -Last 5)",
+      "Bash(taskkill //F //IM chrome.exe)"
     ]
   }
 }

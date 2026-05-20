@@ -12,6 +12,7 @@
 | Phase 4 | Agent 框架 | 已完成 |
 | Phase 5 | 探索方向 | 已跳过 |
 | Phase 6 | Agent 测试与评估 | 已完成 |
+| Phase 7 | PyTorch 模型微调 | 待开始 |
 
 ## 目录结构
 
@@ -25,6 +26,7 @@
 │   ├── phase4_agent_framework.md
 │   ├── phase5_exploration.md
 │   └── phase6_agent_testing_evaluation.md
+│   └── phase7_pytorch_finetuning.md
 ├── code/                          # 实践代码
 │   ├── phase1/
 │   │   ├── phase1_step1_api_call.py
@@ -84,6 +86,7 @@
 │   ├── Phase3 学习笔记.md
 │   ├── Phase4 学习笔记.md
 │   └── Phase6 学习笔记.md
+│   └── Phase7 学习笔记.md
 ├── .claude/
 │   └── CLAUDE.md                  # 项目约定与 Mentor 角色定义
 └── README.md
