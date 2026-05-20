@@ -368,3 +368,63 @@ LoRA 的数学原理：原本 Q = W @ x，LoRA 改为 Q = (W + ΔW) @ x，其中
 - 最佳方案：zero-shot 筛掉明显能解决的 case，fine-tuned 模型处理边界 case
 
 ---
+
+## Step 5: 评估对比 + FastAPI 部署 + 项目收尾
+
+### 运行结果
+
+代码文件：`code/phase7/phase7_step5_summary.py`、`code/phase7/phase7_step5_serve.py`
+项目文档：`code/phase7/PROJECT_README.md`
+
+**三模型评估对比**：
+
+| 模型 | 参数量 | 可训练 | 训练方式 | Accuracy | F1 (weighted) |
+|------|--------|--------|----------|----------|---------------|
+| BERT-base-chinese | 102M | 102M | Full fine-tuning | **0.9615** | **0.9616** |
+| qwen-plus (API) | ~100B | 0 | Zero-shot | **0.8558** | **0.8437** |
+| Qwen2.5-1.5B + LoRA | 1.5B | ~8M (0.5%) | LoRA | pending | pending |
+
+**各类别 F1 对比**：
+
+| 类别 | BERT | Zero-Shot | 差异 |
+|------|------|-----------|------|
+| shipping_delay | 0.9000 | 0.7500 | +15.0% |
+| customs_clearance | 0.9600 | 0.9600 | 0 |
+| tracking_issue | 0.9333 | 0.8276 | +10.6% |
+| billing_dispute | 1.0000 | 0.8667 | +13.3% |
+| schedule_inquiry | 1.0000 | 0.9600 | +4.0% |
+| cargo_damage | 0.9333 | 0.9412 | -0.8% |
+| booking_request | 1.0000 | 0.8276 | +17.2% |
+| general | 0.9630 | 0.6000 | +36.3% |
+
+**关键发现**：
+1. BERT fine-tuning 比 zero-shot 准确率高 **10.6%** — 对于特定领域分类任务，少量标注数据 + 微调远超大模型 zero-shot
+2. `general` 类别差异最大（+36.3%）— zero-shot 下 LLM 倾向于"过度解读"，把通用问题判为具体类别
+3. `cargo_damage` 是唯一 zero-shot 略优于 fine-tuned 的类别（差异 -0.8%）— 可能因为"破损"等关键词在 LLM 预训练语料中语义已经很清晰
+4. 8/8 推理演示全部正确，置信度 0.97-0.99
+
+**FastAPI 服务**：
+- 4 个端点：`POST /predict`、`POST /predict/batch`、`GET /health`、`GET /model/info`
+- 支持单条和批量预测，返回意图类别 + 置信度 + 可选的全类别分数
+
+---
+
+### Phase 7 总结
+
+**完成的 5 个 Step**：
+
+| Step | 内容 | 核心产出 |
+|------|------|----------|
+| 1 | PyTorch 基础 | 手写训练循环、理解 autograd |
+| 2 | HuggingFace | Tokenizer、AutoModel、[CLS] embedding |
+| 3 | BERT 全量微调 | 520条数据、8分类、F1 0.9616 |
+| 4 | Zero-Shot + LoRA | Zero-Shot F1 0.8437、LoRA Colab notebook |
+| 5 | 评估对比 + 部署 | 三模型对比报告、FastAPI 服务 |
+
+**面试核心论据**：
+1. 会用 PyTorch 手写训练循环（从 Tensor 到 backward 到 optimizer.step）
+2. 理解 Tokenizer 和 Transformer 架构（input_ids、attention_mask、[CLS]）
+3. 完整 ML pipeline 实战（数据 → tokenize → 训练 → 验证 → 评估 → 保存）
+4. 理解 LoRA 参数高效微调原理（低秩分解、q_proj/v_proj）
+5. 能做 zero-shot vs fine-tuned 的技术选型（有数据就微调，没数据就 zero-shot）
+6. 能部署为可调用服务（FastAPI）

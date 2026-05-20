@@ -12,7 +12,7 @@
 | Phase 4 | Agent 框架 | 已完成 |
 | Phase 5 | 探索方向 | 已跳过 |
 | Phase 6 | Agent 测试与评估 | 已完成 |
-| Phase 7 | PyTorch 模型微调 | 待开始 |
+| Phase 7 | PyTorch 模型微调 | 已完成 |
 
 ## 目录结构
 
