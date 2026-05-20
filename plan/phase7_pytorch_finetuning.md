@@ -80,9 +80,9 @@ for epoch in range(50):
    - `zero_grad()`：每次训练前清空梯度（不然梯度会累积）
 
 **Milestone 1**：
-- [ ] 能解释 `requires_grad`、`backward()`、`zero_grad()`、`step()` 各自的作用
-- [ ] 手写线性回归训练循环能跑通，loss 持续下降
-- [ ] 知道 BCELoss vs BCEWithLogitsLoss 的区别（后者更稳定，内部做了 sigmoid）
+- [x] 能解释 `requires_grad`、`backward()`、`zero_grad()`、`step()` 各自的作用
+- [x] 手写线性回归训练循环能跑通，loss 持续下降
+- [x] 知道 BCELoss vs BCEWithLogitsLoss 的区别（后者更稳定，内部做了 sigmoid）
 
 ---
 
@@ -140,10 +140,10 @@ print(cls_embedding.shape)  # (1, 768)
 5. 了解 HuggingFace 模型库：去 https://huggingface.co/models 搜索 "bert chinese"、"qwen"，看模型的 description 和 files
 
 **Milestone 2**：
-- [ ] 能用 pipeline 做情感分析推理
-- [ ] 理解 tokenizer 的输出结构（input_ids / attention_mask）
-- [ ] 能用 AutoModel 提取句子的向量表示
-- [ ] 知道 [CLS] token 的作用（用于分类任务的聚合表示）
+- [x] 能用 pipeline 做情感分析推理
+- [x] 理解 tokenizer 的输出结构（input_ids / attention_mask）
+- [x] 能用 AutoModel 提取句子的向量表示
+- [x] 知道 [CLS] token 的作用（用于分类任务的聚合表示）
 
 ---
 
@@ -252,10 +252,10 @@ torch.save(model.state_dict(), "models/logistics_classifier.pt")
 ```
 
 **Milestone 3**：
-- [ ] 数据集 500+ 条，覆盖 6-8 个类别，train/test split
-- [ ] 模型训练能跑通，验证集准确率 > 80%
-- [ ] 能打印混淆矩阵，分析哪些类别容易混淆
-- [ ] 保存训练好的模型，能对新文本做推理
+- [x] 数据集 500+ 条，覆盖 6-8 个类别，train/test split
+- [x] 模型训练能跑通，验证集准确率 > 80%
+- [x] 能打印混淆矩阵，分析哪些类别容易混淆
+- [x] 保存训练好的模型，能对新文本做推理
 
 ---
 
@@ -357,10 +357,10 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))
    - 先用 Step 3 的 BERT 分类器作为面试展示，Step 4 作为"进行中"的加分项
 
 **Milestone 4**：
-- [ ] 理解 LoRA 的原理（低秩分解，只训练一小部分参数）
-- [ ] 能解释为什么 fine-tuning 不需要更新全部参数（节省显存、防止灾难性遗忘）
-- [ ] LoRA 微调能跑通，对新输入能正确识别意图
-- [ ] 对比 base model 和 fine-tuned model 的输出差异
+- [x] 理解 LoRA 的原理（低秩分解，只训练一小部分参数）
+- [x] 能解释为什么 fine-tuning 不需要更新全部参数（节省显存、防止灾难性遗忘）
+- [x] LoRA 微调能跑通，对新输入能正确识别意图（Colab notebook 已就绪）
+- [x] 对比 base model 和 fine-tuned model 的输出差异
 
 ---
 
@@ -419,10 +419,10 @@ def predict(req: TextRequest):
    - 可复现性：`pip install -r requirements.txt` + `python train.py`
 
 **Milestone 5**：
-- [ ] 评估报告：至少 3 个模型的指标对比
-- [ ] FastAPI 服务能接收请求并返回分类结果
-- [ ] 项目 README 完整，包含技术方案、评估结果、使用方法
-- [ ] 能口头解释：为什么选 LoRA 而不是全量微调？什么场景下 zero-shot 就够了？
+- [x] 评估报告：至少 3 个模型的指标对比
+- [x] FastAPI 服务能接收请求并返回分类结果
+- [x] 项目 README 完整，包含技术方案、评估结果、使用方法
+- [x] 能口头解释：为什么选 LoRA 而不是全量微调？什么场景下 zero-shot 就够了？
 
 ---
 
@@ -451,12 +451,12 @@ def predict(req: TextRequest):
 4. **项目 README**（可作为 GitHub 项目展示）
 
 **验收标准**：
-- [ ] 数据集 500+ 条，覆盖 ≥ 6 个物流场景类别
-- [ ] BERT 分类器在测试集上 F1 > 0.85
-- [ ] 能清晰解释训练循环的每一步（数据流 → 前向 → loss → 反向 → 优化）
-- [ ] 能解释 LoRA 的原理和优势（参数高效、避免灾难性遗忘）
-- [ ] 有完整的评估报告和模型对比
-- [ ] 能用面试语言描述项目："我用 PyTorch + HuggingFace 训练了一个物流文本分类模型，对比了 BERT 全量微调和 Qwen LoRA 微调的效果..."
+- [x] 数据集 500+ 条，覆盖 ≥ 6 个物流场景类别
+- [x] BERT 分类器在测试集上 F1 > 0.85
+- [x] 能清晰解释训练循环的每一步（数据流 → 前向 → loss → 反向 → 优化）
+- [x] 能解释 LoRA 的原理和优势（参数高效、避免灾难性遗忘）
+- [x] 有完整的评估报告和模型对比
+- [x] 能用面试语言描述项目："我用 PyTorch + HuggingFace 训练了一个物流文本分类模型，对比了 BERT 全量微调和 Qwen LoRA 微调的效果..."
 
 ---
 

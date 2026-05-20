@@ -428,3 +428,45 @@ LoRA 的数学原理：原本 Q = W @ x，LoRA 改为 Q = (W + ΔW) @ x，其中
 4. 理解 LoRA 参数高效微调原理（低秩分解、q_proj/v_proj）
 5. 能做 zero-shot vs fine-tuned 的技术选型（有数据就微调，没数据就 zero-shot）
 6. 能部署为可调用服务（FastAPI）
+
+---
+
+### 项目独立发布
+
+Phase 7 物流文本分类项目已独立为单独的 GitHub 仓库：
+
+**仓库地址**: https://github.com/KayShan1104/logistics-text-classifier
+
+**项目结构**：
+```
+logistics-text-classifier/
+├── README.md              # 项目文档（含技术方案、评估结果、面试话术）
+├── eval_report.md         # 评估报告（数据集统计、模型对比、混淆矩阵、关键发现）
+├── train_bert.py          # BERT 全量微调 pipeline
+├── zeroshot_baseline.py   # qwen-plus zero-shot 基线评估
+├── evaluate.py            # 多模型对比评估
+├── serve.py               # FastAPI 推理服务
+├── requirements.txt
+├── .gitignore
+└── models/
+    ├── logistics_bert_classifier.pt  # 训练好的模型权重（>100MB，不提交到 git）
+    ├── label_map.json                # 类别 ID 映射
+    ├── eval_results.json             # BERT 评估指标
+    └── eval_results_zeroshot.json    # Zero-shot 评估指标
+```
+
+**验收状态**：
+
+| 验收项 | 状态 |
+|--------|------|
+| 数据集 500+ 条，≥ 6 类别 | ✅ 520 条，8 类别 |
+| BERT 分类器测试集 F1 > 0.85 | ✅ F1 = 0.9616 |
+| 能解释训练循环每一步 | ✅ 笔记中有完整 Q&A |
+| 能解释 LoRA 原理和优势 | ✅ 笔记中有原理说明 |
+| 完整评估报告和模型对比 | ✅ eval_report.md |
+| 可运行代码 | ✅ train/evaluate/serve |
+| 项目 README | ✅ README.md |
+
+**未完成项**：Qwen LoRA Colab 结果待补充（`eval_results_lora.json`），不影响核心验收。后续跑完 Colab 后可将结果更新到仓库中。
+
+**从主项目移除原因**：Phase 7 项目是面向 Maersk 面试的 Portfolio 项目，独立仓库更适合作为 GitHub 项目展示，与 ai-study 学习笔记 repo 分离，结构更清晰。
