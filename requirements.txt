@@ -7,3 +7,7 @@ langchain-openai
 langgraph
 grandalf
 torch
+transformers
+datasets
+accelerate
+scikit-learn
