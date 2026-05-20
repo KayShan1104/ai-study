@@ -339,7 +339,9 @@ Agent 调试的核心难点在于**黑盒性**——LLM 的内部决策过程不
 
 ## Step 6: 综合项目——Agent 质量评估平台（Portfolio）
 
-将 Phase 6 所有学习成果整合为一个独立的 CLI 工具项目 `agent-quality-platform`，可独立发布到 GitHub。
+将 Phase 6 所有学习成果整合为一个独立的 CLI 工具项目 `agent-quality-platform`，已独立发布到 GitHub。
+
+**GitHub 仓库**: https://github.com/KayShan1104/agent-quality-platform
 
 ### 项目结构
 

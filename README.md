@@ -78,19 +78,6 @@
 │   │   └── report_*.json
 │   └── traces/                           # Agent 执行追踪
 │       └── trace_*.json
-├── code/agent-quality-platform/          # Portfolio 项目（可独立发布到 GitHub）
-│   ├── README.md
-│   ├── cli.py                            # CLI 入口
-│   ├── requirements.txt
-│   ├── src/                              # 核心模块
-│   │   ├── metrics.py                    # 评估指标引擎
-│   │   ├── evaluator.py                  # 单用例评估
-│   │   ├── dataset.py                    # 数据集管理
-│   │   ├── pipeline.py                   # CI/CD 流水线
-│   │   ├── trace.py                      # Trace 追踪系统
-│   │   ├── security.py                   # OWASP 安全扫描
-│   │   └── report.py                     # 报告生成
-│   └── tests/                            # 单元测试（18 tests）
 ├── obsidian/                      # 学习笔记
 │   ├── Phase1 学习笔记.md
 │   ├── Phase2 学习笔记.md
