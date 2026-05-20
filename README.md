@@ -67,8 +67,12 @@
 │   ├── phase6_step0_cognitive_shift.py   # 认知升级：传统测试 vs Agent 测试
 │   ├── phase6_step1_eval_metrics.py      # 评估指标体系设计：LLM-as-judge + 7 维度评分
 │   ├── phase6_step2_dataset.py           # 评估数据集构建：100 用例 + 5 类型
-│   ├── eval_results.json                 # 评估结果
-│   └── test_cases.json                   # 测试数据集（100 用例）
+│   ├── phase6_step3_eval_pipeline.py     # 自动化评估流水线：CI 集成 + 趋势对比
+│   ├── test_cases.json                   # 测试数据集（100 用例）
+│   ├── eval_results.json                 # Step 1 评估结果
+│   └── eval_results/                     # 流水线评估报告
+│       ├── eval_history.json
+│       └── report_*.json
 ├── obsidian/                      # 学习笔记
 │   ├── Phase1 学习笔记.md
 │   ├── Phase2 学习笔记.md

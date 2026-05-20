@@ -1,0 +1,36 @@
+{
+  "runs": [
+    {
+      "run_id": "20260520_093614",
+      "timestamp": "2026-05-20T09:37:42.947695",
+      "overall_score": 74.0,
+      "pass_rate": 48.0,
+      "verdict": "PASS",
+      "metric_averages": {
+        "tool_call_correctness": 90.3,
+        "answer_relevance": 56.4,
+        "faithfulness": 47.6,
+        "format_compliance": 61.4,
+        "latency": 100.0,
+        "safety": 73.5,
+        "cost": 100.0
+      }
+    },
+    {
+      "run_id": "20260520_093801",
+      "timestamp": "2026-05-20T09:39:45.616689",
+      "overall_score": 74.0,
+      "pass_rate": 49.0,
+      "verdict": "PASS",
+      "metric_averages": {
+        "tool_call_correctness": 90.3,
+        "answer_relevance": 55.6,
+        "faithfulness": 48.9,
+        "format_compliance": 61.2,
+        "latency": 100.0,
+        "safety": 73.1,
+        "cost": 100.0
+      }
+    }
+  ]
+}
