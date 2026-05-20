@@ -10,7 +10,7 @@
 | Phase 2 | Prompt Engineering | 已完成 |
 | Phase 3 | RAG（检索增强生成） | 已完成 |
 | Phase 4 | Agent 框架 | 已完成 |
-| Phase 5 | 探索方向 | 待开始 |
+| Phase 5 | 探索方向 | 已跳过 |
 | Phase 6 | Agent 测试与评估 | 已完成 |
 
 ## 目录结构
@@ -44,46 +44,55 @@
 │   │   ├── phase2_step5b_v3_and_code_guard.py
 │   │   ├── phase2_step6_prompt_iteration.py
 │   │   └── code_reviewer.py       # 阶段验收：结构化代码审查助手
-│   └── phase3/
-│       ├── phase3_step1_embedding.py
-│       ├── phase3_step2_vector_db.py
-│       ├── phase3_step3_chunking.py
-│       ├── phase3_step4_rag_pipeline.py
-│       ├── phase3_step5_evaluation.py
-│       ├── phase3_step6_advanced.py
-│       ├── phase3_acceptance.py
-│       └── acceptance_results.json
-├── code/phase4/
-│   ├── phase4_step1_langchain_basics.py
-│   ├── phase4_step2_tool_and_agent.py
-│   ├── phase4_step3_memory.py
-│   ├── phase4_step3_postgres_example.py
-│   ├── phase4_step4_multi_agent.py
-│   ├── phase4_step5_handwritten_vs_framework.py
-│   ├── phase4_step6_error_handling.py
-│   ├── phase4_acceptance_handwritten.py    # 阶段验收：手写版
-│   └── phase4_acceptance_framework.py      # 阶段验收：框架版
-├── code/phase6/
-│   ├── phase6_step0_cognitive_shift.py   # 认知升级：传统测试 vs Agent 测试
-│   ├── phase6_step1_eval_metrics.py      # 评估指标体系设计：LLM-as-judge + 7 维度评分
-│   ├── phase6_step2_dataset.py           # 评估数据集构建：100 用例 + 5 类型
-│   ├── phase6_step3_eval_pipeline.py     # 自动化评估流水线：CI 集成 + 趋势对比
-│   ├── phase6_step4_trace_debug.py       # Agent 行为监控：Trace 系统 + 错误分析
-│   ├── phase6_step5_security_eval.py     # 安全评估：OWASP LLM Top 10 + 30 用例扫描
-│   ├── test_cases.json                   # 测试数据集（100 用例）
-│   ├── eval_results.json                 # Step 1 评估结果
-│   ├── security_report.json              # 安全评估报告
-│   ├── eval_results/                     # 流水线评估报告
-│   │   ├── eval_history.json
-│   │   └── report_*.json
-│   └── traces/                           # Agent 执行追踪
-│       └── trace_*.json
+│   ├── phase3/
+│   │   ├── phase3_step1_embedding.py
+│   │   ├── phase3_step2_vector_db.py
+│   │   ├── phase3_step3_chunking.py
+│   │   ├── phase3_step4_rag_pipeline.py
+│   │   ├── phase3_step5_evaluation.py
+│   │   ├── phase3_step6_advanced.py
+│   │   ├── phase3_acceptance.py
+│   │   └── acceptance_results.json
+│   ├── phase4/
+│   │   ├── phase4_step1_langchain_basics.py
+│   │   ├── phase4_step2_tool_and_agent.py
+│   │   ├── phase4_step3_memory.py
+│   │   ├── phase4_step3_postgres_example.py
+│   │   ├── phase4_step4_multi_agent.py
+│   │   ├── phase4_step5_handwritten_vs_framework.py
+│   │   ├── phase4_step6_error_handling.py
+│   │   ├── phase4_acceptance_handwritten.py    # 阶段验收：手写版
+│   │   └── phase4_acceptance_framework.py      # 阶段验收：框架版
+│   └── phase6/
+│       ├── phase6_step0_cognitive_shift.py   # 认知升级：传统测试 vs Agent 测试
+│       ├── phase6_step1_eval_metrics.py      # 评估指标体系：LLM-as-judge + 7 维度评分
+│       ├── phase6_step2_dataset.py           # 评估数据集：100 用例 + 5 类型
+│       ├── phase6_step3_eval_pipeline.py     # 自动化评估流水线：CI 集成 + 趋势对比
+│       ├── phase6_step4_trace_debug.py       # Agent 行为监控：Trace 系统 + 错误分析
+│       ├── phase6_step5_security_eval.py     # 安全评估：OWASP LLM Top 10 + 30 用例扫描
+│       ├── test_cases.json                   # 测试数据集（100 用例）
+│       ├── eval_results.json                 # Step 1 评估结果
+│       ├── security_report.json              # 安全评估报告
+│       ├── eval_results/                     # 流水线评估报告
+│       │   ├── eval_history.json
+│       │   └── report_*.json
+│       └── traces/                           # Agent 执行追踪
+│           └── trace_*.json
 ├── obsidian/                      # 学习笔记
 │   ├── Phase1 学习笔记.md
 │   ├── Phase2 学习笔记.md
-│   └── Phase3 学习笔记.md
-└── .claude/
-    └── CLAUDE.md                  # 项目约定与 Mentor 角色定义
+│   ├── Phase3 学习笔记.md
+│   ├── Phase4 学习笔记.md
+│   └── Phase6 学习笔记.md
+├── .claude/
+│   └── CLAUDE.md                  # 项目约定与 Mentor 角色定义
+└── README.md
+
+## Portfolio 项目
+
+Phase 6 的综合成果已独立发布为 GitHub 项目：
+
+- **[Agent Quality Platform](https://github.com/KayShan1104/agent-quality-platform)** — 完整的 Agent 质量评估平台 CLI 工具，包含 7 维度评估引擎、OWASP 安全扫描、数据集管理、CI/CD 流水线集成、18 个单元测试
 ```
 
 ## 快速开始
@@ -121,6 +130,10 @@ python code/phase1/assistant.py
 
 ## 相关文档
 
-- [学习计划](plan/phase1_api_practice.md)
-- [学习笔记](obsidian/Phase1%20学习笔记.md)
-- [项目约定](.claude/CLAUDE.md)
+- [学习计划](plan/)
+- [Phase1 学习笔记](obsidian/Phase1%20学习笔记.md)
+- [Phase2 学习笔记](obsidian/Phase2%20学习笔记.md)
+- [Phase3 学习笔记](obsidian/Phase3%20学习笔记.md)
+- [Phase4 学习笔记](obsidian/Phase4%20学习笔记.md)
+- [Phase6 学习笔记](obsidian/Phase6%20学习笔记.md)
+- [Agent Quality Platform](https://github.com/KayShan1104/agent-quality-platform)（Phase 6 综合项目）
