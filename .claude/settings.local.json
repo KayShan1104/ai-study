@@ -10,7 +10,13 @@
       "Bash(git add *)",
       "Bash(git push *)",
       "PowerShell(chcp 65001 *)",
-      "Bash(pip install *)"
+      "Bash(pip install *)",
+      "Bash(git rm *)",
+      "Bash(Select-String -Pattern \"Demo|用户|AI:|User|Tool|手写|LangGraph|计算\")",
+      "Bash(Select-Object -First 30)",
+      "Bash(Select-String -NotMatch \"LangChainPendingDeprecationWarning|JsonPlusSerializer\")",
+      "Bash(pip show *)",
+      "Bash(Select-String \"Location|Version|Requires\")"
     ]
   }
 }
