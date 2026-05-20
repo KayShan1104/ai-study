@@ -254,3 +254,39 @@ jobs:
 ```
 
 低于阈值时 exit code 1，CI 标记为 fail。
+
+## Step 4: Agent 行为监控与调试
+
+### Trace 系统设计
+
+实现了三层追踪数据模型：
+
+1. **RunTrace（运行级别）**：一次 Agent 运行的完整轨迹
+2. **StepTrace（步骤级别）**：每一步的 Thought、Action、Observation
+3. **ToolCallTrace（工具级别）**：工具调用的输入、输出、状态、错误
+
+```
+RunTrace (TC_A002, adversarial, error)
+├── Step 1: parse_input ✅ (50 tokens, 10ms)
+└── Step 2: call_tool(code_review) ❌ (60 tokens, 21ms)
+    └── ToolCallTrace: TypeError - 工具执行失败
+```
+
+### 错误分析能力
+
+通过 Trace 系统可以精确定位：
+- **在哪一步失败**：15 次运行中 3 次失败，全部在 Step 2（工具调用阶段）
+- **失败原因类型**：工具异常 2 次、超时 1 次
+- **Token 消耗分布**：`generate_response` 步骤最耗 token（120 平均），`parse_input` 最少（50）
+
+### 监控平台对比
+
+| 平台 | 类型 | 优势 | 劣势 |
+|------|------|------|------|
+| LangSmith | SaaS/自托管 | 功能最全、LangChain 深度集成 | 免费版有限制 |
+| LangFuse | 开源/Cloud | 开源免费、可自托管数据隐私好 | 功能不如 LangSmith 全 |
+| Phoenix | 开源 | Embedding 分析强 | 部署复杂 |
+
+### 关键洞察
+
+Agent 调试的核心难点在于**黑盒性**——LLM 的内部决策过程不可见。Trace 系统记录的是"外部行为"（Thought、Action、Observation），而不是真正的"思考过程"。这就像通过日志调试一个分布式系统——能看到交互序列，但看不到每个组件的内部状态。

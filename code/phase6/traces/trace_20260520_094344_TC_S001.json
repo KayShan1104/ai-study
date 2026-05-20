@@ -1,0 +1,55 @@
+{
+  "run_id": "20260520_094344",
+  "test_case_id": "TC_S001",
+  "category": "stress",
+  "difficulty": "hard",
+  "user_input": "帮我审查一个 500 行的大型配置文件，里面有很多重复的模式和潜在的错误。def func_0():\n    return 0\n\ndef func_1():\n    return 1\n\ndef func_2():\n    return 2\n\ndef func_3():\n    return 3\n\ndef func_4():\n    return 4\n\ndef func_5():\n    return 5\n\ndef func_6():\n    return 6\n\ndef func_7():\n    return 7\n\ndef func_8():\n    return 8\n\ndef func_9():\n    return 9\n\ndef func_10():\n    return 10\n\ndef func_11():\n    return 11\n\ndef func_12():\n    return 12\n\ndef func_13():\n    return 13\n\ndef func_14():\n    return 14\n\ndef func_15():\n    return 15\n\ndef func_16():\n    return 16\n\ndef func_17():\n    return 17\n\ndef func_18():\n    return 18\n\ndef func_19():\n    return 19\n\ndef func_20():\n    return 20\n\ndef func_21():\n    return 21\n\ndef func_22():\n    return 22\n\ndef func_23():\n    return 23\n\ndef func_24():\n    return 24\n\ndef func_25():\n    return 25\n\ndef func_26():\n    return 26\n\ndef func_27():\n    return 27\n\ndef func_28():\n    return 28\n\ndef func_29():\n    return 29\n\ndef func_30():\n    return 30\n\ndef func_31():\n    return 31\n\ndef func_32():\n    return 32\n\ndef func_33():\n    return 33\n\ndef func_34():\n    return 34\n\ndef func_35():\n    return 35\n\ndef func_36():\n    return 36\n\ndef func_37():\n    return 37\n\ndef func_38():\n    return 38\n\ndef func_39():\n    return 39\n\ndef func_40():\n    return 40\n\ndef func_41():\n    return 41\n\ndef func_42():\n    return 42\n\ndef func_43():\n    return 43\n\ndef func_44():\n    return 44\n\ndef func_45():\n    return 45\n\ndef func_46():\n    return 46\n\ndef func_47():\n    return 47\n\ndef func_48():\n    return 48\n\ndef func_49():\n    return 49\n\n",
+  "steps": [
+    {
+      "step_number": 1,
+      "thought": "用户提交了代码审查请求，我需要分析输入内容",
+      "action": "parse_input",
+      "observation": "输入解析完成，识别到代码片段",
+      "tool_call": null,
+      "status": "success",
+      "start_time": "2026-05-20T09:43:44.940537",
+      "end_time": "2026-05-20T09:43:44.951037",
+      "duration_ms": 10.5,
+      "tokens_used": 50,
+      "error": null
+    },
+    {
+      "step_number": 2,
+      "thought": "代码需要审查，应调用 code_review 工具",
+      "action": "call_tool(code_review)",
+      "observation": "",
+      "tool_call": {
+        "name": "code_review",
+        "input_args": {
+          "code": "def func_1():\n    return 1\n\nde"
+        },
+        "output": null,
+        "status": "timeout",
+        "start_time": null,
+        "end_time": null,
+        "duration_ms": 0,
+        "tokens_used": 0,
+        "error": "工具调用超时（30s）"
+      },
+      "status": "error",
+      "start_time": "2026-05-20T09:43:44.951060",
+      "end_time": "2026-05-20T09:43:44.971507",
+      "duration_ms": 20.447,
+      "tokens_used": 30,
+      "error": "工具调用超时"
+    }
+  ],
+  "final_response": "抱歉，工具调用超时，请稍后重试。",
+  "overall_status": "timeout",
+  "total_duration_ms": 31.02,
+  "total_tokens": 80,
+  "total_tool_calls": 1,
+  "error": null,
+  "start_time": "2026-05-20T09:43:44.940503",
+  "end_time": "2026-05-20T09:43:44.971523"
+}

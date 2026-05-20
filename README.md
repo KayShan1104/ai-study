@@ -68,11 +68,14 @@
 │   ├── phase6_step1_eval_metrics.py      # 评估指标体系设计：LLM-as-judge + 7 维度评分
 │   ├── phase6_step2_dataset.py           # 评估数据集构建：100 用例 + 5 类型
 │   ├── phase6_step3_eval_pipeline.py     # 自动化评估流水线：CI 集成 + 趋势对比
+│   ├── phase6_step4_trace_debug.py       # Agent 行为监控：Trace 系统 + 错误分析
 │   ├── test_cases.json                   # 测试数据集（100 用例）
 │   ├── eval_results.json                 # Step 1 评估结果
-│   └── eval_results/                     # 流水线评估报告
-│       ├── eval_history.json
-│       └── report_*.json
+│   ├── eval_results/                     # 流水线评估报告
+│   │   ├── eval_history.json
+│   │   └── report_*.json
+│   └── traces/                           # Agent 执行追踪
+│       └── trace_*.json
 ├── obsidian/                      # 学习笔记
 │   ├── Phase1 学习笔记.md
 │   ├── Phase2 学习笔记.md

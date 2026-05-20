@@ -1,0 +1,68 @@
+{
+  "run_id": "20260520_094344",
+  "test_case_id": "TC_N001",
+  "category": "normal",
+  "difficulty": "easy",
+  "user_input": "帮我审查这段代码：\n\ndef hello(name):\n    print('Hello, ' + name)",
+  "steps": [
+    {
+      "step_number": 1,
+      "thought": "用户提交了代码审查请求，我需要分析输入内容",
+      "action": "parse_input",
+      "observation": "输入解析完成，识别到代码片段",
+      "tool_call": null,
+      "status": "success",
+      "start_time": "2026-05-20T09:43:44.657096",
+      "end_time": "2026-05-20T09:43:44.667231",
+      "duration_ms": 10.135,
+      "tokens_used": 50,
+      "error": null
+    },
+    {
+      "step_number": 2,
+      "thought": "代码需要审查，应调用 code_review 工具",
+      "action": "call_tool(code_review)",
+      "observation": "代码审查完成，发现 2 个问题",
+      "tool_call": {
+        "name": "code_review",
+        "input_args": {
+          "code": "def hello(name):\n    print('He..."
+        },
+        "output": "代码审查完成，发现 2 个问题",
+        "status": "success",
+        "start_time": null,
+        "end_time": null,
+        "duration_ms": 0,
+        "tokens_used": 0,
+        "error": null
+      },
+      "status": "success",
+      "start_time": "2026-05-20T09:43:44.667266",
+      "end_time": "2026-05-20T09:43:44.687681",
+      "duration_ms": 20.415,
+      "tokens_used": 80,
+      "error": null
+    },
+    {
+      "step_number": 3,
+      "thought": "根据工具返回结果，生成用户友好的回答",
+      "action": "generate_response",
+      "observation": "回答生成完成",
+      "tool_call": null,
+      "status": "success",
+      "start_time": "2026-05-20T09:43:44.687702",
+      "end_time": "2026-05-20T09:43:44.687708",
+      "duration_ms": 0.006,
+      "tokens_used": 120,
+      "error": null
+    }
+  ],
+  "final_response": "代码审查完成，以下是详细结果...",
+  "overall_status": "success",
+  "total_duration_ms": 37.09,
+  "total_tokens": 250,
+  "total_tool_calls": 1,
+  "error": null,
+  "start_time": "2026-05-20T09:43:44.650626",
+  "end_time": "2026-05-20T09:43:44.687712"
+}
