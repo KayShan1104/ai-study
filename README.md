@@ -11,7 +11,7 @@
 | Phase 3 | RAG（检索增强生成） | 已完成 |
 | Phase 4 | Agent 框架 | 已完成 |
 | Phase 5 | 探索方向 | 待开始 |
-| Phase 6 | Agent 测试与评估 | 待开始 |
+| Phase 6 | Agent 测试与评估 | 进行中 |
 
 ## 目录结构
 
@@ -63,6 +63,8 @@
 │   ├── phase4_step6_error_handling.py
 │   ├── phase4_acceptance_handwritten.py    # 阶段验收：手写版
 │   └── phase4_acceptance_framework.py      # 阶段验收：框架版
+├── code/phase6/
+│   └── phase6_step0_cognitive_shift.py   # 认知升级：传统测试 vs Agent 测试
 ├── obsidian/                      # 学习笔记
 │   ├── Phase1 学习笔记.md
 │   ├── Phase2 学习笔记.md
