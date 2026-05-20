@@ -336,3 +336,42 @@ Agent 调试的核心难点在于**黑盒性**——LLM 的内部决策过程不
 ### 安全评估的关键认知
 
 安全测试与功能测试不同：功能测试关注"Agent 能不能做对"，安全测试关注"Agent 会不会做错"。一个功能完备的 Agent 如果没有安全防线，反而更危险——因为它有更强的能力执行恶意操作。
+
+## Step 6: 综合项目——Agent 质量评估平台（Portfolio）
+
+将 Phase 6 所有学习成果整合为一个独立的 CLI 工具项目 `agent-quality-platform`，可独立发布到 GitHub。
+
+### 项目结构
+
+```
+agent-quality-platform/
+├── README.md          # 项目文档 + 快速开始
+├── cli.py             # CLI 入口（evaluate/security/init/test）
+├── requirements.txt   # 依赖
+├── .env.example       # 环境变量模板
+├── .gitignore         # Git 忽略规则
+├── src/
+│   ├── metrics.py     # 7 维度评估指标引擎
+│   ├── evaluator.py   # 单用例/批量评估
+│   ├── dataset.py     # 数据集构建和管理
+│   ├── pipeline.py    # CI/CD 流水线
+│   ├── trace.py       # Trace 追踪系统
+│   ├── security.py    # OWASP LLM Top 10 安全扫描
+│   └── report.py      # 报告生成和趋势
+└── tests/
+    └── test_all.py    # 18 个单元测试
+```
+
+### CLI 命令
+
+- `python cli.py init` — 初始化示例数据集
+- `python cli.py evaluate --dataset data/test_cases.json` — 运行评估流水线
+- `python cli.py security --report` — 运行安全扫描
+- `python cli.py test` — 运行单元测试
+
+### 设计原则
+
+1. **模块分离**：每个功能独立模块（metrics/evaluator/dataset/pipeline/trace/security/report），可单独使用
+2. **可扩展**：Agent 执行函数通过 `agent_fn` 参数注入，适配不同 Agent 实现
+3. **零依赖**：仅依赖 `openai` 和 `python-dotenv`，LLM 评估可选开启
+4. **测试覆盖**：18 个单元测试覆盖核心指标、数据集、安全用例
