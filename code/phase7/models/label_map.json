@@ -1,0 +1,10 @@
+{
+  "0": "shipping_delay",
+  "1": "customs_clearance",
+  "2": "tracking_issue",
+  "3": "billing_dispute",
+  "4": "schedule_inquiry",
+  "5": "cargo_damage",
+  "6": "booking_request",
+  "7": "general"
+}
