@@ -30,3 +30,6 @@ ENV/
 
 # Chroma 向量数据库数据（只保留代码，不提交数据）
 code/phase3/chroma_data*/
+
+# PyTorch 模型权重（超过 GitHub 100MB 限制）
+*.pt
